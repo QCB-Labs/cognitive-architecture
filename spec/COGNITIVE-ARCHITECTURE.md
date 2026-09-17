@@ -1062,7 +1062,7 @@ The coarsest useful version of the sheet assigns one editing rule per file.
 
 | Class | Rule |
 |---|---|
-| **Seed** | Rewritten in place to be truer, not longer. A revision should be shorter than what it replaces. Verify the ratio by measurement, never by the sense of having finished. |
+| **Seed** | Rewritten in place to be truer, not longer. **A revision should be 60–80% of the length of what it replaces.** Verify the ratio by measurement, never by the sense of having finished. |
 | **Log** | Append only. A correction is a new dated entry naming the old one. Never edit a landed entry. |
 | **Consent** | Verbatim forever. Amendments append beside the preserved original. No compression at any threshold. |
 | **Law** | Changed only by the operator, in a session. No tool can write it. |
@@ -1070,6 +1070,8 @@ The coarsest useful version of the sheet assigns one editing rule per file.
 | **Archive** | Never edited. Never loaded for reasoning. Provenance only. |
 
 Three notes.
+
+**On the Seed range.** A compression rule without a number is quoted for a year and never executed — the feeling of having finished arrives before the job does, and only a measured ratio catches that. 60–80% is the figure reported by the source of this rule, held across that project's life. Treat it as a starting band to be measured against, not a constant.
 
 **Why Consent is its own class.** "Truer, not longer" is correct for an identity seed and destructive for a consent record. Paraphrasing a consent answer substitutes the summariser's judgement for the consenting party's — which is the thing that made it consent.
 
@@ -1514,7 +1516,7 @@ Four things adopted here on their merits.
 
 **Every deferral carries a named deadline.** Applied to §33: the open questions there carry owners and defaults.
 
-**Write classes, including a separate Consent class** → §20.1. The Seed rule as stated there — truer not longer, verified by measurement rather than by the feeling of having finished — is sharper than a rule without a number.
+**Write classes, including a separate Consent class** → §20.1. The Seed rule carries a range — a revision at 60–80% of its predecessor's length — and a rule with a number is enforceable where a rule without one is a sentiment. The source reports the range holding across the life of that project. The number is quoted in §20.1 as they state it.
 
 **One primary source worth reading directly.** `skills/subagents-mistaken-for-humans_v1.0.md` is a first-person account of an agent treating its own spawned subagents as human reviewers, including a section on why the gate its author had just built did not catch it. That is the empirical grounding for `subagent_report` in §8.1 — a primary record rather than a claim about one.
 
