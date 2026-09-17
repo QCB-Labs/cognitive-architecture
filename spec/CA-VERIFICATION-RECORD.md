@@ -10,7 +10,7 @@ Housekeeping for the Cognitive Architecture Specification. Kept separate so the 
 | `qualitycontrolbureau/agent-harness-template` | `2267378` | yes |
 | `waypostmaster/waypost` | `ab49815` | yes |
 | `EmergenceAI/Emergence-World` | `57d0d38` | yes |
-| Emergence World Season 2 paper | — | **no — blocked by network policy. Not read.** |
+| Emergence World Season 2 paper | — | **read second-hand — see §4** |
 
 ---
 
@@ -88,9 +88,22 @@ Counting correlated evidence by unique source is standard. It did not need the c
 
 ---
 
-## 4. Outstanding
+## 4. The Season 2 paper — read second-hand
 
-**Emergence World Season 2 paper.** Not read — the publisher's domain and the preprint server are both blocked by this environment's network policy. Everything in §30.1 comes from the project's public repository or is marked as unread. Any claim depending on Season 2 results needs checking against the paper.
+The paper could not be fetched in the working environment; the publisher's domain and the preprint server are both blocked by network policy.
+
+It was instead read by a separate session with the PDF uploaded, against a fixed eight-question set, with three rules: cite a page for every claim, say "not found" rather than infer, and label each answer MEASURED, ABSENT, or UNCLEAR.
+
+**Status of those citations.** Page numbers in Appendix A of the specification are *carried* under the rule in §1 above. They have not been checked against the PDF by the author of that appendix. Spot-check before quoting any of them in a publication.
+
+**Two claims the extraction corrected.**
+
+- The paper never restates Season 1's per-world survival counts. Any Season 1 figures used come from the project's public repository, not from the paper, and must be attributed there.
+- The paper explicitly declines to be read as a model comparison: results measure "the combined behavior of the model and the provider's serving infrastructure" (p. 64). Two of the four Season 2 population losses have causes that are not the model.
+
+**One claim the extraction overturned.** An earlier draft asserted that no epistemic measurement exists anywhere. Season 2 adds a six-criterion misinformation rubric (Table 8, p. 21) and a persistence-restraint criterion for phishing (Table 6, p. 19). The corrected claim is narrower: post-hoc event scoring exists and failed universally; continuous instrumentation carried on the record does not exist.
+
+---
 
 **Licence terms to observe.**
 
