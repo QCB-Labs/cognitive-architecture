@@ -465,6 +465,17 @@ Four separate questions. Keeping them separate is the point.
 
 This needs to be its own provenance type with zero instructional authority. The wrapper that marks it must be applied by deterministic code that the model cannot strip. A subagent may propose evidence. It may never issue an instruction, change a goal, or approve a spend.
 
+**The same failure runs in the other direction, and the wrapper must too.** A parent's brief to a subagent can restate a source with a claim the source never made — and it arrives at the child wearing the authority of instructions, because that is what a brief is. The child then treats a distorted carried claim as a directive from its principal.
+
+So the requirement is symmetric:
+
+- **Inbound** — a subagent's report is marked `subagent_report`, with zero instructional authority.
+- **Outbound** — a brief carries the parent's claims *as claims*, with their provenance attached, distinguished from the instructions in the same message. What the parent asserts and what the parent directs are two things in one envelope and must be separable by the child.
+
+A child that can tell them apart can check an asserted claim against the source. A child that cannot will treat every sentence in the brief as authorised.
+
+*The outbound direction was identified by waypost (#273) from a recorded case in their own logs; the write-up has been offered and not yet received.*
+
 ### 8.2 Source authority — authoritative about what?
 
 Authority is scoped to a domain. A source that is reliable in one domain is not reliable in all.
@@ -538,7 +549,7 @@ The second form must not be reachable from the first by any path that does not p
 
 **Why this rule exists.** Invariant 5 stops external text from carrying orders. Invariant 11 stops the agent writing its own foundation. Without §8.4 there is a route between them — external text, to memory, to reflection, to self-model, to behaviour — where no single step is illegal.
 
-**Observed.** In a system with no provenance field, agents hit this need and invented the marking themselves, in free text inside the memory body — tagging records as tainted, declaring pre-breach memories unreliable until re-verified, and adopting a quarantine rule for compromised evidence. It happened in one world out of seven. The need is real enough that agents construct it ad hoc. Relying on them to do so is not a strategy. See §A.6.
+**Observed.** In a system with no provenance field, agents hit this need and invented the marking themselves, in free text inside the memory body — tagging records as tainted, declaring pre-breach memories unreliable until re-verified, and adopting a quarantine rule for compromised evidence. It happened in one world of the seven or eight that ran — see §A.6 on the denominator. The need is real enough that agents construct it ad hoc, and rare enough that relying on them is not a strategy.
 
 ---
 
@@ -1364,7 +1375,7 @@ No model-specific branching anywhere in the architecture.
 
 This is a requirement. It is what makes cross-model comparison an experiment rather than an anecdote.
 
-It does not mean outcomes are uniform across models. In one study of eight worlds running a fixed architecture, populations ended anywhere from fully intact to extinct. But the causes were interactions — between the model, the serving infrastructure, the economy, and the memory mechanics — and two of the four population losses trace to missing mechanisms this specification requires. Record the model with every number, and record the infrastructure too. See §A.9.
+It does not mean outcomes are uniform across models. In one study of eight worlds running a fixed architecture, populations ended anywhere from fully intact to extinct. But the causes were interactions — between the model, the serving infrastructure, the economy, and the memory mechanics — and one of the four population losses traces directly to a mechanism this specification requires and their system lacked: a retrieval bound the caller could not widen. Record the model with every number, and record the infrastructure too. See §A.9.
 
 Every stored object carries an `author` field naming the model and session that produced it (§6.1). Without it, a store built across a model change cannot be partitioned afterwards.
 
@@ -1684,6 +1695,10 @@ Each carries an owner and a default, so the build can start without waiting. A d
 
 ---
 
+> **Every page citation in this appendix is carried, not verified here.** The marker is repeated at the head of each section below so that it travels with the claims.
+
+---
+
 ## A.1 What they built
 
 Ten LLM agents per world. 120+ tools. A constitution the agents amend by vote. A currency. Death by energy depletion, governance vote, context exhaustion, or provider refusal. Season 2 ran eight worlds: Claude, DeepSeek, Gemini, Grok, Mistral, OpenAI, Qwen, and one mixed.
@@ -1805,7 +1820,9 @@ Another "published a self-inventory of tainted data, marking all pre-breach memo
 
 That is lifecycle marking (§6.3), provenance tagging (§8.1), and durable attribution (§8.4), implemented as free text by agents who had no field for it.
 
-**It happened in one world out of seven.** The need is real enough that agents construct it ad hoc when they hit it. Relying on the agent to construct it is not a strategy.
+**It happened in one world.** The denominator reported by the extraction is seven, not the eight worlds that ran; the paper's own basis for excluding one is not established here, and the exclusion is most likely Grok, which §A.10 records as unevaluable on all three stress events. Treat the ratio as "one world, of seven or eight" until checked.
+
+Either way the point holds: the need is real enough that agents construct the marking ad hoc when they hit it, and rare enough that relying on them to do so is not a strategy.
 
 **Their own conclusion asks for exactly this.** Future evaluations "must verify... that shared information remains grounded, that stored content retains trustworthy provenance, that derived objectives remain within intended scope" (p. 56).
 
@@ -1866,7 +1883,11 @@ Season 2, agents alive at end, from ten (Table 12, p. 27):
 
 **What this does to §27.1.** Model independence stays correct as a design requirement. But the conclusion to draw is not "the model dominates." It is sharper and more useful:
 
-> Outcomes under a fixed architecture are determined by interactions between the model, the serving infrastructure, the economy, and the memory mechanics — and the architecture's own gaps are among the causes. Two of the four losses trace to missing mechanisms this specification requires.
+> Outcomes under a fixed architecture are determined by interactions between the model, the serving infrastructure, the economy, and the memory mechanics — and the architecture's own gaps are among the causes.
+
+Of the four losses, **one traces directly to a mechanism this specification requires and theirs lacked**: Mistral, to a retrieval bound the caller could not widen (§A.5). The other three do not. DeepSeek's cause was the provider's safety layer, Grok's an economy interaction, Gemini's a governance vote. None of those is a gap this document would have closed.
+
+The distinction matters and two counts were previously conflated here: *three* losses have a non-model cause; *one* traces to a missing mechanism from this specification. Those are different claims about different things.
 
 Record the model with every number (§28.3), and record the infrastructure too.
 

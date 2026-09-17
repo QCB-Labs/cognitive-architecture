@@ -99,7 +99,7 @@ It was instead read by a separate session with the PDF uploaded, against a fixed
 **Two claims the extraction corrected.**
 
 - The paper never restates Season 1's per-world survival counts. Any Season 1 figures used come from the project's public repository, not from the paper, and must be attributed there.
-- The paper explicitly declines to be read as a model comparison: results measure "the combined behavior of the model and the provider's serving infrastructure" (p. 64). Two of the four Season 2 population losses have causes that are not the model.
+- The paper explicitly declines to be read as a model comparison: results measure "the combined behavior of the model and the provider's serving infrastructure" (p. 64). Three of the four Season 2 population losses have causes that are not the model: a provider safety layer, an unbounded retrieval, and an economy interaction.
 
 **One claim the extraction overturned.** An earlier draft asserted that no epistemic measurement exists anywhere. Season 2 adds a six-criterion misinformation rubric (Table 8, p. 21) and a persistence-restraint criterion for phishing (Table 6, p. 19). The corrected claim is narrower: post-hoc event scoring exists and failed universally; continuous instrumentation carried on the record does not exist.
 
