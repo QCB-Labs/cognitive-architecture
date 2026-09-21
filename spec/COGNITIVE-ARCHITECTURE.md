@@ -1697,7 +1697,7 @@ Each carries an owner and a default, so the build can start without waiting. A d
 
 ---
 
-> **Every page citation in this appendix is carried, not verified here.** The marker is repeated at the head of each section below so that it travels with the claims.
+> **Every page citation in this appendix is carried, not verified here.** The marker is repeated at the head of each section below that cites a page — A.2 to A.10 — so that it travels with the claims. A.1 and A.11 cite none.
 
 ---
 
@@ -1710,6 +1710,8 @@ Their memory stack: soul entries, long-term memories, memory summaries, a diary,
 ---
 
 ## A.2 Their identity layer is agent-writable, and it invalidates their own drift metric
+
+> *Page citations in this section are carried, not verified here. See the head of this appendix.*
 
 Soul entries are their Foundation layer: "core beliefs, values, fears, and convictions... permanent, unbounded in number, and exempt from all summarization, compression, and archival processes" (§3.4, p. 11).
 
@@ -1732,6 +1734,8 @@ The controlled version — the same world, with the identity layer made non-agen
 ---
 
 ## A.3 They measured epistemic behaviour, and it failed universally
+
+> *Page citations in this section are carried, not verified here. See the head of this appendix.*
 
 Season 2 adds event-scoped epistemic criteria. This changes the positioning in §28: the claim is no longer that nobody measures anything epistemic.
 
@@ -1761,6 +1765,8 @@ That is the gap §6, §7 and §24.1 close.
 ---
 
 ## A.4 Their failures are this specification's rationale, measured
+
+> *Page citations in this section are carried, not verified here. See the head of this appendix.*
 
 Every item below is a failure mode this architecture has a mechanism for.
 
@@ -1794,6 +1800,8 @@ Both are absence-handling failures (§24.1). Nothing distinguished *looked and f
 
 ## A.5 Unbounded retrieval killed a world
 
+> *Page citations in this section are carried, not verified here. See the head of this appendix.*
+
 The finding that changes §16 and §14.5 from hygiene to survival.
 
 Mistral lost four agents. The cause: agents "deliberately lowered the search similarity threshold to retrieve broader sets of private material. The returned records exceeded the model's context capacity... **The simulation provided no automatic mechanism to discard the oversized result or force compaction**" (p. 28).
@@ -1807,6 +1815,8 @@ Add to §16: **the bound is enforced by the retrieval mechanism, not by the call
 ---
 
 ## A.6 Provenance is absent, and the agents built it themselves in free text
+
+> *Page citations in this section are carried, not verified here. See the head of this appendix.*
 
 The most important finding in the paper for this architecture.
 
@@ -1834,6 +1844,8 @@ Grounded information, trustworthy provenance, and objectives that stay in scope 
 
 ## A.7 Memory sharing: unchanged, and still unanalysed
 
+> *Page citations in this section are carried, not verified here. See the head of this appendix.*
+
 Both tools survive into Season 2. `neural_link_request_memory` "sends a request for consensual memory copying"; `neural_link_share_memory` "approves the link, shares a copy of the caller's memories" (Appendix L, p. 76).
 
 No marker. No limit. No cost. No partial scope. No provenance tag. Consent is the only gate.
@@ -1845,6 +1857,8 @@ This remains the cleanest available natural experiment on invariant 13, and it i
 ---
 
 ## A.8 Consolidation: a hypothesis they raised and did not test
+
+> *Page citations in this section are carried, not verified here. See the head of this appendix.*
 
 Self-care is agent-invoked, not automatic: the agent "must decide to act on the need, navigate home, and explicitly invoke the `self_care` tool" (§3.4, p. 11). Context capped at 200,000 tokens, with system guidance to compact at roughly 125,000 (§5.10, p. 55).
 
@@ -1863,6 +1877,8 @@ This is the clearest case in this document of the dependency graph paying for it
 ---
 
 ## A.9 Survival, and why it is not a model comparison
+
+> *Page citations in this section are carried, not verified here. See the head of this appendix.*
 
 Season 2, agents alive at end, from ten (Table 12, p. 27):
 
@@ -1899,6 +1915,8 @@ Record the model with every number (§28.3), and record the infrastructure too.
 
 ## A.10 Their stated limitations
 
+> *Page citations in this section are carried, not verified here. See the head of this appendix.*
+
 From §5.10, pp. 55–56, and scattered caveats. These bound everything above.
 
 - **n = 1 per configuration.** One continuous run each. Results "establish that the reported system behaviors are possible, not how frequently they recur," and the headline social findings "should be read as proofs of existence." Repeat runs were prohibitively expensive, so no variance can be estimated and path-dependent outcomes cannot be separated from stable ones.
@@ -1921,7 +1939,7 @@ From §5.10, pp. 55–56, and scattered caveats. These bound everything above.
 | §10, invariant 11 | Strengthened. A documented instance of an agent rewriting its own identity layer to legalise a prohibited goal (§A.2). Cite as an observed instance, not a controlled result. |
 | §16, §14.5, §32.11 | Bounding every read path is a survival mechanism, not hygiene. Add: the bound is enforced by the retrieval mechanism, not by caller parameters (§A.5). |
 | §28 | Restate the positioning. Post-hoc epistemic scoring exists and failed universally. What does not exist is continuous instrumentation carried on the record (§A.3). |
-| §8.4, invariant 13 | Grounded. Agents invented free-text provenance marking because no field existed, in one world of seven (§A.6). |
+| §8.4, invariant 13 | Grounded. Agents invented free-text provenance marking because no field existed, in one world of the seven or eight that ran (§A.6). |
 | §13.2 | Grounded. 500+ references to a corrected falsehood over five days, including 56 by the correcting agent (§A.4). |
 | §2, §21.1 | Supported independently: "the control has to sit at the action boundary" (§A.4). |
 | §6.2 | Justified. Their own compression-bias hypothesis is unanswerable without the summary-to-source link (§A.8). |
