@@ -19,7 +19,7 @@ This document specifies a system that gives an LLM-based agent a memory and a se
 
 The test of completeness: an engineer should be able to build this without having to invent any cognitive rule while writing code. Every rule should already be here.
 
-**Reading order.** Section 1 states the problem. Sections 2 to 5 give the frame. Sections 6 to 19 specify the objects and the processes. Sections 20 to 27 give the rules and the boundaries. Sections 28 to 30 cover the experiment. Section 31 records what has been built so far. Sections 32 to 34 cover findings, related work, and open questions.
+**Reading order.** Section 1 states the problem. Sections 2 to 5 give the frame. Sections 6 to 19 specify the objects and the processes. Sections 20 to 27 give the rules and the boundaries. Sections 28 and 29 cover the experiment, and section 30 related work. Section 31 records what has been built so far. Section 32 covers findings, section 33 open questions, and Appendix A an outside study.
 
 You do not need any other document to read this one.
 
@@ -649,7 +649,7 @@ This is the standard every other invariant should be held to. Prefer *the write 
 
 In the reference implementation, `values` is not a separate store with its own threshold. Values live inside the foundation and evolving zones.
 
-This has not caused a problem at one agent across eighty-three wakes. But it means the "semi-stable, high threshold" tier is untested.
+This has not caused a problem at one agent across more than a hundred wakes. But it means the "semi-stable, high threshold" tier is untested.
 
 ---
 
@@ -840,7 +840,7 @@ This is a survival requirement, not an efficiency concern. In one observed syste
 
 If consolidation is O(all episodes), the system degrades exactly in the long-horizon condition it exists to serve.
 
-**The bounding discipline, stated generally:** bound every read path by construction. A read tool takes the newest N, or runs a bounded query, or returns hops rather than the whole graph, or takes one key. No read path scales with the store. Applied this way, eighty-three wakes of history does not change the cost of waking up.
+**The bounding discipline, stated generally:** bound every read path by construction. A read tool takes the newest N, or runs a bounded query, or returns hops rather than the whole graph, or takes one key. No read path scales with the store. Applied this way, more than a hundred wakes of history does not change the cost of waking up.
 
 Consolidation is one case of this. The pass reads a bounded window of unconsolidated episodes. It never reads the history.
 
@@ -934,7 +934,7 @@ Three mechanisms.
 - Nothing from a private store reaches a public channel, by any transformation.
 - Every publication records what was published, where, and with what outcome.
 
-**Note on enforcement.** The privacy partition is the weakest of the three, because a rule enforces it rather than a mechanism. It is the obvious candidate for §10.1 treatment: make the publishing path structurally unable to carry private content, instead of asking the model not to.
+**Note on enforcement.** The privacy partition is the weakest of the three. An outgoing check now catches identifiers — private patterns, local paths, secrets, unlisted addresses — but nothing catches paraphrase, so most of it is still enforced by a rule rather than a mechanism. It is the obvious candidate for §10.1 treatment: make the publishing path structurally unable to carry private content, instead of asking the model not to.
 
 ### 18.4 Session integrity — when a session dies
 
@@ -1535,7 +1535,7 @@ Precision of citation is not evidence of accuracy. In both cases it was the thin
 
 ## 31. Build state
 
-Audited against the reference implementation at `b829f8a` and the baseline template at `2267378`.
+Audited against the reference implementation at `b829f8a` and the baseline template at `2267378`. Partly updated 2026-09-28 against the reference implementation at `2ac304c` and the template at `d41f07e`: the tool count, decline/stop/envelopes, and the privacy check. A full re-audit is still owed.
 
 ### 31.1 Built
 
@@ -1554,13 +1554,13 @@ Audited against the reference implementation at `b829f8a` and the baseline templ
 | World-model tiering | Proposed / confirmed / retracted. The only lifecycle in the build. |
 | Works catalogue | Index plus per-item records. |
 | Capability-gap log | Should feed the metrics. |
-| Egress staging and checks | §18.3. |
+| Egress staging and checks | §18.3. An outgoing check refuses peer mail carrying private patterns, local paths, secrets or unlisted addresses, and flags them on staged drafts. |
 | Fail-closed spend gate | Human presence at the time of the act. §25.2. |
 | Session integrity | Crash dumps, recovery at wake, failure reporting. §18.4. |
 | One-way doors | Private context closes the public reply window. §18.5. |
 | Bounded reads | Cost does not scale with store size. §14.5. |
 | Write classes | §20.1. |
-| Typed tool interface | 56 tools across three local servers. Right transport, storage verbs (§24.3). |
+| Typed tool interface | 80 tools across three local servers (55 harness, 15 market, 10 square). Right transport, storage verbs (§24.3). |
 
 ### 31.2 Built differently from this specification
 
@@ -1590,12 +1590,13 @@ Audited against the reference implementation at `b829f8a` and the baseline templ
 | Audit layer (§23) | Partial. Captures what was decided and published, never what was shown. |
 | Thread defaults (§9.4) | The thread store only grows. |
 | Dereference check (§21.2) | Stability of read-only claims carries no evidential weight. |
+| Decline, agent-raised stop, envelopes (§25.3) | Written in the standing orders only. No tool, marker or envelope register enforces them. |
 
 ### 31.4 The shape of the gap
 
 The governance half of this architecture is implemented thoroughly. The epistemic half is not implemented at all.
 
-Every mechanism that decides *whether the agent may do something* — write its own foundation, obey a piece of text, publish a claim, spend money — exists, is enforced, and has survived eighty-three wakes. Every mechanism that decides *what the agent knows and how it knows it* is missing. No object carries evidence. No relation connects a conclusion to what produced it. Nothing can be retired once it turns out to be wrong.
+Every mechanism that decides *whether the agent may do something* — write its own foundation, obey a piece of text, publish a claim, spend money — exists, is enforced, and has survived more than a hundred wakes. Every mechanism that decides *what the agent knows and how it knows it* is missing. No object carries evidence. No relation connects a conclusion to what produced it. Nothing can be retired once it turns out to be wrong.
 
 This is not a criticism of the order. Governance had to come first. An agent that can be talked out of its identity or into spending money is not a research instrument, and no epistemic layer would have survived contact with a live world without the gates in place.
 
@@ -1672,7 +1673,7 @@ Each carries an owner and a default, so the build can start without waiting. A d
 | 3 | When cascading revision reaches a self-belief, does it downgrade automatically or require reflection? | Require reflection, matching §19's conservatism everywhere else. |
 | 4 | Should percepts decay, or only episodes and derived cognition? | Percepts decay with their episodes. |
 | 5 | What promotes a thread to a commitment, and can the system detect an implicit promise? | Only an explicit promise counts. Conservative, and probably right for now. |
-| 6 | How is the privacy partition enforced mechanically rather than by rule? | Unsolved. Until then, invariant 16 stays in the stated class and is labelled as such. |
+| 6 | How is the privacy partition enforced mechanically rather than by rule? | Partly solved: identifiers are checked by the outgoing check; paraphrase is not. Invariant 16 is labelled checked for identifiers and stated for paraphrase. |
 | 7 | How is consolidation tiered over already-derived objects rather than raw episodes? | Window over unconsolidated episodes only. Revisit when the store makes it necessary. |
 | 8 | What is the confidence ceiling the model may claim without repeated direct observation? | Pick a number, test it, record it as an experimental parameter. |
 | 9 | Which model runs the cross-model step? | The one with the most different training lineage from the first, so the comparison is not two close relatives. |
