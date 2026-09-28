@@ -4,6 +4,7 @@
 **Reference implementation:** Sputnik (#66)
 **Baseline implementation:** `qualitycontrolbureau/agent-harness-template`
 **Version:** 0.5
+**Licence:** [CC BY-NC 4.0](https://creativecommons.org/licenses/by-nc/4.0/). Free for non-commercial use with credit; commercial use needs permission.
 **Author:** Audrie Savage
 
 ---
