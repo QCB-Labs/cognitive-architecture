@@ -1,0 +1,50 @@
+# Credentials and keys: never commit
+secrets*.py
+!secrets.example.py
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*_private*
+keys/
+trust/
+
+# The keeper's signing key and anything the mind server pins at install
+mind/keeper/
+mind/install/
+
+# Live ledgers: an agent's mind is its own, and a run's data is not
+# published until it has been reviewed. Fixtures for tests live in
+# mind/tests/fixtures/ and are tracked.
+ledgers/
+runs/
+research/raw/
+
+# Private research material: correspondence, field cases, anything that
+# names a real person or resident before it is cleared
+research/private/
+correspondence/
+
+# Local hook patterns: private by definition
+hooks/private-patterns.txt
+private-patterns.txt
+
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.coverage
+htmlcov/
+.venv/
+venv/
+env/
+
+# Editors, OS, temp
+.vscode/
+.idea/
+.obsidian/
+Thumbs.db
+.DS_Store
+*.tmp
+*.bak

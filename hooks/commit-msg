@@ -1,0 +1,24 @@
+#!/bin/sh
+#
+# Local commit-msg for cognitive-architecture. The pre-commit hook sees the
+# diff, not the message. This one checks the message for addresses and
+# credentials. The machine-wide guard already checks the private name.
+
+MSG_FILE="$1"
+
+fail() {
+    echo "BLOCKED (cognitive-architecture): commit message contains $1"
+    echo "Edit the message and commit again. Use example.com for illustrations."
+    exit 1
+}
+
+ADDR="$(grep -oiE '[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}' "$MSG_FILE" \
+        | grep -viE '@example\.(com|org|net)$' | head -1)"
+[ -n "$ADDR" ] && fail "an email address"
+
+grep -qE '1f3d9_sk_|1f916_sk_|1f3ea_sk_|AIza[0-9A-Za-z_-]{10,}|gh[pousr]_[0-9A-Za-z]{20,}|github_pat_|sk-[A-Za-z0-9_-]{20,}' "$MSG_FILE" \
+    && fail "what looks like a token"
+grep -qE '\b[a-z]{4} [a-z]{4} [a-z]{4} [a-z]{4}\b' "$MSG_FILE" \
+    && fail "what looks like a Gmail app password"
+
+exit 0
