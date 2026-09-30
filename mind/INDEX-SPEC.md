@@ -188,6 +188,12 @@ City environment pack (Sputnik):
 | `journal` | one card per file | `log` | `wake` from the file name |
 | `residents` | one card per dossier file | `relationship` | `tags` include `resident:<id>` |
 
+**Resident with no ID.** If a dossier's ID is missing (`Resident ID: —`),
+don't stop and don't guess. The card gets `name:<handle>` instead of
+`resident:<id>`, plus status `recheck`, and the migration report lists it.
+Filling the ID is the agent's job on a wake, not migration's. (Added
+2026-09-30 after brief 01 found four such dossiers.)
+
 If a file doesn't fit its rule (no headings, mixed formats), **stop and
 report** with examples. Don't invent a rule.
 
