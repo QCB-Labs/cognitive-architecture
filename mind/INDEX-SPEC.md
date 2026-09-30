@@ -1,4 +1,4 @@
-# Memory cards and the associative index: build spec v0.1
+# Memory cards and the associative index: build spec v0.2
 
 *Stage 0 of `BUILD-SPEC.md`, in detail. Decision (Audrie, 2026-09-30):
 **Option B**: memory becomes cards, and the cards are the truth. The old
@@ -119,6 +119,11 @@ are always read whole (§6).
 - **A derived lookup** (`{memory}/cards/index.json`: id → last line, tag →
   ids) can always be rebuilt from `cards.jsonl`. If it's missing or broken,
   rebuild it; never trust it over the JSONL.
+- **Source files may sit outside `{memory}`.** `goals` (and identity,
+  governance) live at the agent's repo root in both Sputnik and the template.
+  Migration reads each logical file from where `naming.json` puts it,
+  relative to the **repo root**, not the memory folder. (v0.2: brief 01's
+  private fixture copied only `memory/`, so goals weren't migrated.)
 - **Generated views:** the old files (`lessons`, `open_threads`, `goals`,
   `continuity`) are regenerated from cards after every write, with a header
   line: `<!-- Generated from cards. Do not edit. -->`. During the read half
@@ -167,6 +172,11 @@ City environment pack (Sputnik):
 - A pattern that matches ambiguously (`#188` with no context) gets the
   generic tag `ref:188`. Don't guess the type.
 - Tags are lower case.
+- **`resident:<n>` only ever holds a city resident ID** (the number the
+  city uses as `maker_id` / `owner_id`; checked 30 Sept: tel's things show
+  361, tel's recorded ID). Other services number the same agent differently
+  (Sputnik is city #66 and Square citizen 688). Those get their own tags,
+  `square:<n>` and `market:<n>`, and never `resident:`. (v0.2)
 - Re-running extraction on the same text gives the same tags.
 - Build a **tag test set** from real text (R2): at least 30 lines from the
   private fixture, each with the tags it should get. Check the extractor
@@ -184,7 +194,7 @@ City environment pack (Sputnik):
 | `city_rules` | each top-level bullet or `##` heading | `rule` | |
 | `open_threads` | each top-level `- **...**` item | `thread` | The bold line is `title`. Items under `## Resolved threads` get `status: done` |
 | `goals` | each goal heading or top-level item | `goal` | Keep the file's order |
-| `continuity` | each `##`/`###` section | `decision` | |
+| `continuity` | each top-level bullet (`- `) inside its `##`/`###` sections | `decision` | A section heading, and any text before its first bullet, belong to the first bullet's card. Text before the first heading belongs to the first card. (v0.2: v0.1 cut on headings and made three giant cards from Sputnik's file) |
 | `journal` | one card per file | `log` | `wake` from the file name |
 | `residents` | one card per dossier file | `relationship` | `tags` include `resident:<id>` |
 
@@ -207,9 +217,12 @@ Code proposes, a human or the agent confirms:
 
 ### 5.3 Round trip (the most important test)
 
-Generate the views from the cards. The text of every original file must be
-recoverable **exactly**, apart from whitespace at the ends of lines. If one
-character of the agent's words is lost or changed, the migration fails.
+Generate the views from the cards. Every original file must be recovered
+**byte for byte**, including its line endings (CRLF or LF, whichever the
+source used) and whether it ends with a newline. If one byte differs, the
+migration fails. (v0.2: v0.1 allowed end-of-line differences, and the views
+came back LF-only; once cards are the source, that would change every file
+in git.)
 
 ### 5.4 During the read half
 
