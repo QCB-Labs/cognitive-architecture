@@ -41,6 +41,227 @@ building. You don't need the conversation that produced it.
 
 ---
 
+## Stage 0 — Foundation: bounded memory (build this first)
+
+*Added 2026-09-30 (S48), after the scope was narrowed and frozen: "the CA is a
+memory architecture that keeps a persistent agent's context bounded and its
+beliefs traceable, across a growing life." Everything from §1 on (the mind
+server, L1–L3) comes after Stage 0 and is unchanged by it for now.*
+
+### S0.1 Why this comes first
+
+The agent can't wake inside a Sonnet-sized context any more. Measured on
+2026-09-30 in two read-only test wakes (F0, tests 1 and 2): Sputnik on
+Claude Sonnet 4.6 (Thinking) through Antigravity, told to read everything it
+normally reads and write nothing. His repo was checked before and after:
+nothing changed. Sizes are the tools' exact outputs, saved by Antigravity;
+tokens ≈ bytes ÷ 4. Context figures come from POE's reading of Antigravity's
+undocumented conversation records: trust the pattern, not the last digit.
+
+| Test | Client | Before any read | End of memory reads (step 8) | End of orientation | Checkpoints |
+|---|---|---|---|---|---|
+| 1 | Antigravity desktop app | ~35,600 | ~78,000 | not reached (stopped mid step 17) | 2 |
+| 2 | `agy` CLI (no plugins; city + harness only) | ~34,900 | ~86,000 | ~124,000, all 20 steps | 1 |
+
+Limit reported in both: 160,000.
+
+**Where it went (test 1, exact output sizes):**
+
+| Source | Bytes | ≈ Tokens |
+|---|---|---|
+| Fixed overhead before step 1 (client instructions, tool definitions, `GEMINI.md`) | n/a | ~35,000 |
+| Memory: `lessons.md` | 70,125 | 17,500 |
+| Memory: `open-threads.md` | 67,254 | 16,800 |
+| Memory: last 5 mission logs | 53,524 | 13,400 |
+| Memory: continuity, soul, governance, goals | 41,246 | 10,300 |
+| Market: `browse_shelves` (full listing) | 42,859 | 10,700 |
+| Square: profile/status | 20,030 | 5,000 |
+| City: `city.me` | 25,905 | 6,500 |
+| City: feed catch-up (9 pages of changes) | ~17,400 | 4,300 |
+| **Total before acting** | | **~125,000** |
+
+**The fixed overhead, broken down (estimates):** `GEMINI.md` ~5,400; harness
+tool definitions ~5,000; the city's tool catalog ~3,600 (44 tools, 14.5 KB);
+the desktop app's loaded skills 7,354 (its own counter: 53 skills, mostly an
+unrelated science plugin). The CLI has no plugins and still starts at
+~34,900, so **roughly 20,000 tokens are the client's own instructions.** That
+part can't be trimmed from inside the client; it is a reason to measure other
+drivers (Gemini CLI, direct API) before choosing the cloud one.
+
+**Growth:** `open-threads.md` went from 37.5 KB to 67.5 KB between 25 and 30
+September (+80% in five days); `lessons.md` from 52 KB to 70 KB over its last
+30 commits. Every harness read returns the whole file (`_read_text`). CA §31.1
+lists "bounded reads" as built. It isn't.
+
+**What the files have become** (for whoever designs the entry split):
+- `lessons.md`: 107 dated entries. The August ones are short operational
+  rules ("verify an API call by checking the room"). Recent ones are long
+  reflections with headed sections. Two kinds in one file; the digest needs
+  the rules, not every reflection. It's Sputnik's file: tag, don't rewrite.
+- `open-threads.md`: 48 threads, mostly living. Not goals (`goals.md` is
+  4 KB): relationships and conversations he may return to, each dense with
+  resident, place, note and thing IDs. It is already a hand-made associative
+  index, read whole.
+- Mission logs: ~10 KB each; five read every wake.
+
+**Protocol drift found:** three city calls failed on arguments the city no
+longer accepts (`after_change_id`, a `browse` view that doesn't exist,
+`query`), and the correspondence list was read three times. Small in tokens;
+`GEMINI.md` is behind the world's current tools.
+
+Orientation has to fall from ~125,000 to about 40,000 to leave space to
+act. No research layer can be tested on an agent that can't wake. Stage 0
+fixes that, and its before-and-after numbers are the study's first result.
+
+### S0.2 Where it's built
+
+In the **template harness** (`agent-harness-template`, `tools/harness_mcp.py`)
+first, then ported to Sputnik in the same shape, as Ticket 6 was. **Not** in
+the mind server: Stage 0 has to work in the harness the agent runs today.
+Keep everything environment-neutral: nothing in the index or sleep may know
+about the city (CA study 3 moves the same mind to other worlds).
+
+### S0.3 Two halves
+
+- **Bounded reads (the associative index).** Each wake loads a small,
+  relevant slice, and no read can exceed its budget (CA invariant 8).
+- **Bounded orientation.** The world is read the same way: only what's new
+  since last time, in limited amounts. This is done through the wake
+  protocol and the world's own parameters, never by wrapping its tools.
+- **Bounded growth (sleep).** Between wakes, the store is kept healthy:
+  duplicates linked, stale entries made less findable, old logs summarised.
+  Nothing is deleted.
+
+Either half alone fails: small reads from an ever-growing junk drawer, or a
+tidy store still read whole. See `research/ideas/sleep-consolidation.md`.
+
+### S0.4 Five requirements (non-negotiable)
+
+1. **The raw record is never overwritten.** Every write is append-only, or
+   preserves the previous version in an archive the agent doesn't read.
+   (Today `safe_replace_file` leaves `.bak` files beside the live file inside
+   `memory/`. Move them to an archive path.)
+2. **Tag at write time.** Each entry gets tags when it's written: the IDs and
+   names it mentions (place IDs, resident handles, wake numbers, thread IDs),
+   extracted **by code, not by the model**. Tags mean "eligible to find",
+   never "important" or "true".
+3. **The system holds source and authority.** Who or what an entry came
+   from, and through which channel, are fields the harness sets. The model
+   never writes them and they never live only in prose (CA §8.4).
+4. **Every entry has a status slot:** `live`, `superseded_by: <id>`,
+   `merged_into: <id>`, and a findability weight. Forgetting lowers the
+   weight; it never deletes.
+5. **Reads never write.** Retrieval is logged to a separate read log. Being
+   read doesn't change an entry.
+
+### S0.5 The index
+
+**Decided 2026-09-30 (Audrie): Option B, cards are the truth.** The full
+design, split rules, tag patterns, wake card and tickets (R1–R8, W1–W6) are in
+**`mind/INDEX-SPEC.md`**. It supersedes the sketch below and tickets F3–F7
+where they differ.
+
+- **Units.** Split the big files into entries: one lesson, one open thread,
+  one continuity item, one mission-log entry, one resident dossier. Each gets
+  a stable ID and points back to its source file and position.
+- **Storage.** Append-only JSONL beside the memory files, plus a derived
+  lookup that can be rebuilt from it at any time. No database.
+- **Search, v0:** deterministic. Tag match, recency, and weight. **No
+  embeddings in v0.** They come later if tags prove too blunt, measured, not
+  assumed.
+
+### S0.6 Bounded reads
+
+- **A wake digest with a hard budget.** One startup read that returns: the
+  identity core (soul, governance, goals: always whole, never trimmed), the
+  continuity core, the top active threads, and the newest mission log. Budget
+  in tokens, set in config, **refused rather than truncated** if exceeded.
+- **Cue-driven reads for the rest.** `recall(tags or text, limit)` returns
+  the best-matching entries within a per-call budget, plus what was searched
+  and what was left out.
+- The old whole-file tools stay available for audit and repair, but leave the
+  wake protocol.
+
+### S0.6a The whole-wake budget
+
+One budget for everything read before the agent acts, split into slices.
+Numbers are proposals for Audrie. The window is the one the **client**
+reports, not the model's: Antigravity reported 160,000 for Sonnet 4.6 and
+checkpointed well before it (S0.1). Re-measure for each driver.
+
+| Slice | Proposed share of the window | How it's held |
+|---|---|---|
+| Protocol + identity (`GEMINI.md`, soul, governance, goals) | ~6% | Kept short; identity never trimmed |
+| Memory (the wake digest) | ~10% | Hard budget in the harness (F7) |
+| World orientation | ~12% | Cursors for every feed, limits on every call, in the protocol |
+| **Total before acting** | **≤ ~30%** | Measured every wake (F0 + F1) |
+| Left for acting and replies | **≥ 70%** | |
+
+For world orientation, the protocol already keeps a cursor for one feed
+(`seen.json`: notes). Every feed the wake reads gets one, and every world
+call that offers a limit or a "since" parameter uses it. The harness only
+stores the cursors; it never calls the world itself.
+
+### S0.7 Sleep, minimal (v0)
+
+Runs between wakes, as a separate process. Deterministic in v0; a small local
+model is a later option (see the idea file).
+
+- Link entries that share tags heavily as *possible duplicates* (a flag, not
+  a merge).
+- Lower the findability of threads the agent has closed and of entries not
+  read in N wakes.
+- Summarise mission logs older than N wakes into a digest entry that points
+  at the originals. The originals stay.
+- Write only **derived** entries and weight changes. Never edit a raw entry.
+- Every sleep action is logged, reversible, and **not shown to the agent**
+  as a list of proposals. The researcher can see all of it.
+
+### S0.8 Protocol changes
+
+The wake protocol (`GEMINI.md`) changes from "read these files" to "read the
+digest, then recall what you need." That edit is **proposed to Audrie, not
+made by the builder**. It must not add restraint or silence lines ("People
+first" still opens Act; see the CLAUDE.md rule).
+
+### S0.9 Done means
+
+1. **Everything read before acting stays within ~30% of the window** at
+   wake N and still does 20 wakes later, while the store keeps growing. The
+   memory digest alone fits its own budget (proposed: **20,000 tokens**, to be
+   set by Audrie).
+2. The continuity probe, run in a sealed unrecorded session, scores no worse
+   after Stage 0 than before it.
+3. Every check has failed once on purpose before being trusted.
+4. The raw record for the whole period can be rebuilt byte for byte.
+
+### S0.10 Tickets
+
+| # | Ticket | Acceptance |
+|---|---|---|
+| F0 | **Whole-wake measurement (client side).** Token count at the end of orientation and at the end of the wake, from the model client (AGY/Sonnet), plus when compaction fires. Audrie runs it; no code | A baseline over ≥3 real wakes: memory vs world vs acting |
+| F1 | **Read meter.** Log the size of every harness read tool's output per wake, to a gitignored per-wake record | A before-Stage-0 baseline over ≥3 real wakes, matched against F0 |
+| F2 | **Archive, not `.bak`.** Previous versions go to an archive path outside the wake's reads | No `.bak` in `memory/`; every past version still recoverable |
+| F3 | **Entry split + IDs.** Split lessons, threads, continuity, mission logs, dossiers into entries with stable IDs and source pointers | Round trip: entries rebuild the original files exactly |
+| F4 | **Write-time tags + system fields.** Code-extracted tags; source, channel and authority set by the harness | Tests: a model-supplied source or authority is refused |
+| F5 | **Status and weight.** `live` / `superseded_by` / `merged_into` + findability | Tests: superseded entries are still readable by ID |
+| F6 | **`recall` with budgets + read log** | Tests: over-budget refused, not truncated; reads change nothing |
+| F7 | **Wake digest** with a configured budget | Fits budget on Sputnik's real store; identity core never trimmed |
+| F8 | **Sleep v0**, separate process, logged and reversible | Tests: no raw entry changes; every action has an undo |
+| F9 | **Port to Sputnik** + the proposed `GEMINI.md` read-step change | Audrie reviews the protocol diff before it lands |
+| F10 | **Feed cursors.** A cursor for every world feed the wake reads; the proposed protocol lines to use them and each call's limits | Orientation measured by F0 falls, and nothing the agent needed is missed (checked against a full read once) |
+| F11 | **Market and Square catch-up.** These servers are ours (`tools/market_mcp.py`, `tools/square_mcp.py`), so "since" and limit parameters go in the tools themselves: listings and posts newer than a stored marker; a light profile call returning only quotas and standing | Test 1 read 42.9 KB of shelves and 20 KB of profile; both fall to a few KB on a quiet day |
+| F12 | **Protocol repair.** Fix the three city calls that use arguments the city no longer accepts; stop the repeated correspondence listing. Proposed to Audrie as a `GEMINI.md` diff | No `bad_input` errors in a test wake |
+
+Tickets F1–F8 go in the template first. The builder rules in §0 apply: don't
+commit, your own code, make every check fail once, stop and report.
+
+*Stage 0 drafted by Claude Opus 5.5 (POE desk, Claude Code) from
+conversation with Audrie, 2026-09-30. Ideas and direction: Audrie. Reviewed
+by Audrie: pending.*
+
+---
+
 ## 1. What you're building
 
 One MCP server that holds an agent's mind between sessions. The model can only
