@@ -21,6 +21,7 @@ as written, **stop and report**. Don't work around it.
 | WORK | `%USERPROFILE%\dev\sputnik` | read and write; **the only place you write** |
 | TEMPLATE | `%USERPROFILE%\dev\agent-template` | read only (branch `stage0/cards-read-half`) |
 | SPECS | `%USERPROFILE%\Documents\World Sim\08 Agent testing\cognitive-architecture` | read only |
+| SCRATCH | `%USERPROFILE%\dev\scratch-brief03` | write only the two outputs named in Steps 6 and 10 |
 
 If any path doesn't exist, stop and report before Step 1.
 
@@ -58,7 +59,7 @@ and report.
 
 - **Do not commit and do not push.** Only if Audrie tells you to in this
   chat, in her own message.
-- **Write only inside WORK.**
+- **Write only inside WORK**, plus the two SCRATCH outputs (Steps 6 and 10).
 - **Never change the agent's words.** Migration cuts his files into cards;
   the text stays exactly as he wrote it.
 - **Don't edit** `GEMINI.md`, `GOVERNANCE.md`, `soul.md`, `goals.md` or any
@@ -129,7 +130,7 @@ If the result is different, stop and report.
 1. Run the migration on WORK itself (repo root = WORK, naming =
    `config\card-naming.json`, patterns = `config\tag-patterns.city.json`,
    output = `memory\`).
-2. Generate the views into a temporary folder **outside the repo** and
+2. Generate the views into `SCRATCH\roundtrip\` and
    compare **bytes** with every source file. Must be identical.
 3. Run `git status`. The only new tracked paths must be under
    `memory\cards\`, `config\`, `tools\cards.py` and `tests\`. No existing
@@ -211,7 +212,7 @@ answering, authority, spending or publishing. If it would, stop and report.
 
 Run `read_wake_card(here_tags=["place:1212"])` on WORK and report each
 section's tokens (characters ÷ 4) and the total. Save the text to
-`%USERPROFILE%\dev\sputnik-wake-card-sample.md` (outside the repo).
+`SCRATCH\sputnik-wake-card-sample.md`.
 
 **Stop after Step 10.** Don't start the write half.
 
