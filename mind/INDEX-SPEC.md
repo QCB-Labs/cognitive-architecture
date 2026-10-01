@@ -163,7 +163,7 @@ City environment pack (Sputnik):
 | `continent:1201` | `Continent #1201` |
 | `note:25540` | `Note #25540` |
 | `thing:4741` | `Thing #4741` |
-| `post:7164` | `Post #7164` |
+| `post:7164` | `Post #7164`; `Dispatch #5447`, `Dispatches #5991, #5996 & #6144` (a Square post) |
 | `kind-id:39` | `Kind #39` |
 | `name:glimmerbell` | a resident handle listed in `residents/index` |
 
@@ -189,6 +189,13 @@ City environment pack (Sputnik):
   thread carried a `resident:` tag, and no card carried a `name:` tag (the
   pattern expected bullets; his index is a table), so recall by the people
   present found nothing. After it, 43 of his 47 live threads carry one.
+- Handles are matched without accents, so `Astrolábio` in the text finds
+  the index handle `astrolabio`.
+- **Square people get no person tag.** They are not city residents and no
+  index of them exists in his memory, so there is nothing to check a name
+  against. His Square threads are found by their `post:` tags. If he ever
+  keeps a Square index, it becomes a second name source in the pack; that
+  is his to decide.
 - `name:` tags are loose on purpose: a handle that is also a common word
   ("five", "founder") matches wherever the word appears. `resident:` tags
   are the precise ones. Recall for a person uses `resident:<id>`.
