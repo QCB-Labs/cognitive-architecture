@@ -19,9 +19,10 @@ order; if a step can't be done as written, stop and report.
 | TEMPLATE | `%USERPROFILE%\dev\agent-template` | read and write |
 | WORK | `%USERPROFILE%\dev\sputnik` | read and write |
 | SPECS | `%USERPROFILE%\Documents\World Sim\08 Agent testing\cognitive-architecture` | read only |
+| SCRATCH | `%USERPROFILE%\dev\scratch-brief03` | write only the one output named in Step 4 |
 
-Pytest's own default temp folder is allowed. Nothing else outside TEMPLATE
-and WORK.
+Pytest's own default temp folder is allowed. Nothing else outside TEMPLATE,
+WORK and SCRATCH.
 
 ## Rules
 
