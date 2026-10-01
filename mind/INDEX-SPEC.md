@@ -213,7 +213,7 @@ City environment pack (Sputnik):
 | Logical file | Cut on | Kind | Notes |
 |---|---|---|---|
 | `lessons` | each `## <date-stamp>` heading | `rule` or `reflection` (§5.2) | The heading's stamp is `created_at`. One heading = one card, even if it holds several bullets |
-| `city_rules` | each top-level bullet or `##` heading | `rule` | |
+| `city_rules` | each top-level bullet or `##` heading | `rule` | Status follows the file's own section (§5.2a). `created_at` is the entry's own first date, where it wrote one |
 | `open_threads` | each top-level `- **...**` item | `thread` | The bold line is `title`. Items under `## Resolved threads` get `status: done` |
 | `goals` | each goal heading or top-level item | `goal` | Keep the file's order |
 | `continuity` | each top-level bullet (`- `) inside its `##`/`###` sections | `decision` | A section heading, and any text before its first bullet, belong to the first bullet's card. Text before the first heading belongs to the first card. (v0.2: v0.1 cut on headings and made three giant cards from Sputnik's file) |
@@ -236,6 +236,35 @@ Code proposes, a human or the agent confirms:
 - Proposed `reflection`: anything else.
 - Every proposal is written to `{memory}/cards/kind-review.md` for
   confirmation. Until confirmed, the card carries status `recheck`.
+
+### 5.2a A rulebook's sections set status (added 1 Oct)
+
+His rulebook already sorts its entries: Confirmed, Proposed, Retracted. The
+environment pack says which heading means which status
+(`section_status` in the pack, not in code):
+
+| Section heading starts with | Card status | In the wake card |
+|---|---|---|
+| anything else (Confirmed, the introduction) | `live` | shown under Rules |
+| `Proposed` | `recheck` | not under Rules; queued in "What needs checking" |
+| `Retracted` | `done` | not shown; still readable by id |
+
+- Headings themselves stay `live`, so the Rules section still shows the
+  shape of the file. A line after the rules says how many rule cards are
+  waiting to be checked and how many are closed, and how to find them.
+- A placeholder line the pack names (`- (none yet …)`) takes no status.
+- "What needs checking" runs newest `created_at` first. It used
+  `updated_at`, which on migrated cards is the migration's clock.
+- Nothing in his file changes, and the round trip is unaffected.
+
+Why: on Sputnik's memory the Rules section was about 3,500 tokens, 25 of its
+entries proposals from August that his own file labels "do not rely on". His
+protocol reads city rules only as needed, not every wake. Showing confirmed
+rules only brings the section to about 950 tokens.
+
+**Known gap, for the write half:** `done` is the nearest status to
+"retracted", but recall leaves `done` cards out. A retraction exists so a
+false belief isn't proposed again, so it should be findable. See W7.
 
 ### 5.3 Round trip (the most important test)
 
@@ -351,6 +380,7 @@ This is the "seal" in `BUILD-SPEC.md` §7, in its first form.
 | W3 | **Handover card** in `write_mission_log` (§8) | The next wake card's section 2 shows it |
 | W4 | **Commitments.** Kind confirmed by the agent in a wake; links `from` thread | A commitment appears in section 3 until `done` |
 | W5 | **Protocol diff for writing**, proposed to Audrie | Reviewed before it lands |
+| W7 | **One door for what he learns [proposal, not decided].** `append_lesson` and `propose_city_rule` become one write: a `rule` or `reflection` card, entered as `recheck`. The ladder from his rulebook is kept as card status: proposed = `recheck`, confirmed = `live` (by the operator, or after two verified outcomes in different wakes), retracted = a new status `retracted` that recall still returns, marked as false. `read_city_rules` and `propose_city_rule` leave the wake protocol and stay as operator repair tools. The template loses its city-named file: a rulebook is an environment pack matter | Audrie decides. Then: tests for the ladder (a `recheck` card can't be made `live` by the agent alone); the protocol diff is proposed, not made; his old file stays in his repo untouched |
 | W6 | **Port to Sputnik** | One normal wake end to end; continuity probe in a sealed session scores no worse than before |
 
 ---
@@ -361,7 +391,8 @@ This is the "seal" in `BUILD-SPEC.md` §7, in its first form.
 |---|---|---|
 | Q1 | Section budgets (§6) | 3k / 2k / 2k / 4k = 11k |
 | Q2 | Who confirms rule vs reflection | Sputnik, in a normal wake, told first in conversation |
-| Q3 | Does `city_rules` merge into `rule` cards or stay a separate file | Merge, with a `source` of `self` |
+| Q3 | Does `city_rules` merge into `rule` cards or stay a separate file | Merge, with a `source` of `self`. **Read side done 1 Oct** (§5.2a): his rulebook's entries are `rule` cards with status from their section. Write side is W7 |
+| Q5 | One door for what he learns: retire `propose_city_rule` and the separate rulebook (W7)? | Yes, in the write half. Audrie leans yes (1 Oct); not yet decided |
 | Q4 | Mission logs: keep five-per-wake reading anywhere? | No. Handover + recall replace it |
 
 ---
