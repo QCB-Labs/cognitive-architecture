@@ -315,8 +315,14 @@ empty):
   was searched, how many matched, how many were left out.
 - Ranking v0: number of matching tags, then `weight`, then newest
   `updated_at`. No embeddings in v0.
-- Per-call budget in config (proposed 4,000 tokens). **Over budget is
-  refused, not truncated:** return the count and ask for a narrower recall.
+- Per-call budget in config (proposed 4,000 tokens). **Over budget
+  returns what fits, whole cards only, best match first,** and names every
+  card left out by id, kind and title so it can be read with `read_card`. No
+  card is ever cut. It is refused only when not even the best match fits.
+  (Changed 2026-10-01: v0 refused the whole call. In the first test wake on
+  cards, `recall(tags=["place:1146"])` matched 19,824 tokens against 4,000 and
+  returned nothing, so the protocol's own Step 9 call failed at his home
+  place.)
 - **Reads never write.** Every recall is logged to
   `{memory}/cards/reads.jsonl` (time, wake, query, ids returned). Being read
   changes nothing on the card.
@@ -367,7 +373,7 @@ This is the "seal" in `BUILD-SPEC.md` §7, in its first form.
 | R3 | **Migration.** Cut each logical file into cards per §5.1; kind proposals per §5.2 | Runs on the made-up fixture and the private fixture; `kind-review.md` produced |
 | R4 | **Round trip.** Views regenerated from cards | Every original file recovered exactly (§5.3), on both fixtures |
 | R5 | **Re-cut on file write** (§5.4) | Tests: editing one entry in a file changes one card; other card IDs stay the same |
-| R6 | **`recall` and `read_card`** with budget and read log | Tests: over budget is refused; a recall leaves `cards.jsonl` byte-identical |
+| R6 | **`recall` and `read_card`** with budget and read log | Tests: over budget returns the cards that fit and names the rest; refused only if no card fits; a recall leaves `cards.jsonl` byte-identical |
 | R7 | **`read_wake_card`**, five sections, budgets in config | On the private fixture: sections 2–5 fit 11,000 tokens; identity never trimmed; nothing cut mid-card |
 | R8 | **Port to Sputnik + protocol diff.** Same code, city pack enabled; proposed `GEMINI.md` diff replacing the whole-file reads with `read_wake_card` + `recall` | Audrie reviews the diff. Then one read-only test wake (F0 method) shows the new orientation size |
 

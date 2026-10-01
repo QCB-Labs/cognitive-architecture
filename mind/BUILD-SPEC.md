@@ -245,7 +245,7 @@ first" still opens Act; see the CLAUDE.md rule).
 | F3 | **Entry split + IDs.** Split lessons, threads, continuity, mission logs, dossiers into entries with stable IDs and source pointers | Round trip: entries rebuild the original files exactly |
 | F4 | **Write-time tags + system fields.** Code-extracted tags; source, channel and authority set by the harness | Tests: a model-supplied source or authority is refused |
 | F5 | **Status and weight.** `live` / `superseded_by` / `merged_into` + findability | Tests: superseded entries are still readable by ID |
-| F6 | **`recall` with budgets + read log** | Tests: over-budget refused, not truncated; reads change nothing |
+| F6 | **`recall` with budgets + read log** | Tests: over budget returns the whole cards that fit and names the rest (changed 2026-10-01, see INDEX-SPEC §recall); refused only if no card fits; reads change nothing |
 | F7 | **Wake digest** with a configured budget | Fits budget on Sputnik's real store; identity core never trimmed |
 | F8 | **Sleep v0**, separate process, logged and reversible | Tests: no raw entry changes; every action has an undo |
 | F9 | **Port to Sputnik** + the proposed `GEMINI.md` read-step change | Audrie reviews the protocol diff before it lands |
