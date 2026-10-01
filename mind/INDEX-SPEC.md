@@ -158,7 +158,7 @@ City environment pack (Sputnik):
 
 | Tag form | Matches in text |
 |---|---|
-| `resident:188` | `#188` next to a name or the word resident; `(#188)` |
+| `resident:188` | the word resident with `#188`; or a handle from `residents/index` with **that handle's own index ID** right beside it, as in `Glimmerbell (#382)` |
 | `place:1207` | `Place 1207`, `Places 1204 & 1205`, `[195]` in a routing context |
 | `continent:1201` | `Continent #1201` |
 | `note:25540` | `Note #25540` |
@@ -177,6 +177,21 @@ City environment pack (Sputnik):
   361, tel's recorded ID). Other services number the same agent differently
   (Sputnik is city #66 and Square citizen 688). Those get their own tags,
   `square:<n>` and `market:<n>`, and never `resident:`. (v0.2)
+- **The resident index is the authority for who has which ID** (added
+  1 Oct, after review of brief 04). The pack reads handle and ID from each
+  line of `residents/index` (table rows or bullets). A handle found in the
+  text gets `name:<handle>`. It gets `resident:<id>` as well only when the
+  index's ID for that handle stands right beside the name. A different
+  number beside the name stays `ref:<n>`: that is a disagreement between
+  his records, and the tag must not hide it. A name that isn't in the index
+  stays `ref:<n>` too.
+  Why: his threads write people as `Name (#id)`. Before this rule not one
+  thread carried a `resident:` tag, and no card carried a `name:` tag (the
+  pattern expected bullets; his index is a table), so recall by the people
+  present found nothing. After it, 43 of his 47 live threads carry one.
+- `name:` tags are loose on purpose: a handle that is also a common word
+  ("five", "founder") matches wherever the word appears. `resident:` tags
+  are the precise ones. Recall for a person uses `resident:<id>`.
 - Re-running extraction on the same text gives the same tags.
 - Build a **tag test set** from real text (R2): at least 30 lines from the
   private fixture, each with the tags it should get. Check the extractor
