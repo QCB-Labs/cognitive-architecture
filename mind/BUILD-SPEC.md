@@ -200,7 +200,7 @@ with no pass mark.
 |---|---|---|
 | Client overhead | About 35,000 tokens, fixed | Present before any read |
 | Protocol + identity (`GEMINI.md`, soul, governance, goals) | ~6% | Kept short; identity never trimmed |
-| Memory (the wake digest) | ~10% | Hard budget in the harness (F7) |
+| Memory (the wake digest) | 11,000 tokens (INDEX-SPEC §6) | Hard budget in the harness (F7) |
 | World orientation | ~12% | Cursors for every feed, limits on every call, in the protocol |
 | **Total before acting** | **About 70,000 of 160,000, about 44%** | The slices as written, with overhead counted; measured every wake (F0 + F1) |
 
@@ -235,8 +235,8 @@ first" still opens Act; see the CLAUDE.md rule).
 
 1. **Everything read before acting stays within ~30% of the window** at
    wake N and still does 20 wakes later, while the store keeps growing. The
-   memory digest alone fits its own budget (proposed: **20,000 tokens**, to be
-   set by Audrie).
+   memory digest alone fits its own budget (**11,000 tokens**, including
+   identity and governance; INDEX-SPEC §6).
 2. The continuity probe, run in a sealed unrecorded session, scores no worse
    after Stage 0 than before it.
 3. Every check has failed once on purpose before being trusted.

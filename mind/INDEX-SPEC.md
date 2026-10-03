@@ -292,13 +292,18 @@ empty):
 
 | # | Section | Contents | Budget |
 |---|---|---|---|
-| 1 | **Who I am** | identity and governance, whole | not trimmed, not counted against the rest |
+| 1 | **Who I am** | identity and governance, whole | not trimmed, counted in the whole-card budget |
 | 2 | **What I was doing** | the last `handover` card; `live` goals | 3,000 tokens |
 | 3 | **What I owe** | `live` commitments, oldest first | 2,000 tokens |
 | 4 | **What needs checking** | cards with status `recheck`; cards whose `supersedes` chain changed in the last wake | 2,000 tokens |
 | 5 | **What's here** | `live` threads and relationships whose tags match where the agent is now and who is present (passed in as tags) | 4,000 tokens |
 
-- Budgets are in config. Proposed total for sections 2–5: **11,000 tokens**.
+- Budgets are in config. The total for the whole card is **11,000 tokens**,
+  including identity and governance (Audrie, 2026-10-03). Measured on
+  2026-10-03 at Sputnik `5448e4f`: the whole card is about 9,300 tokens,
+  including about 4,560 for identity and governance. One client view holds
+  about 46,000 bytes, roughly 11,500 tokens. The budget comes from fitting
+  the whole card in one client view.
 - Count tokens as characters ÷ 4 unless a real tokenizer is available.
 - **If a section doesn't fit, return the highest-ranked cards that do, and
   say how many were left out and how to recall them.** Never cut a card in
@@ -374,7 +379,7 @@ This is the "seal" in `BUILD-SPEC.md` §7, in its first form.
 | R4 | **Round trip.** Views regenerated from cards | Every original file recovered exactly (§5.3), on both fixtures |
 | R5 | **Re-cut on file write** (§5.4) | Tests: editing one entry in a file changes one card; other card IDs stay the same |
 | R6 | **`recall` and `read_card`** with budget and read log | Tests: over budget returns the cards that fit and names the rest; refused only if no card fits; a recall leaves `cards.jsonl` byte-identical |
-| R7 | **`read_wake_card`**, five sections, budgets in config | On the private fixture: sections 2–5 fit 11,000 tokens; identity never trimmed; nothing cut mid-card |
+| R7 | **`read_wake_card`**, five sections, budgets in config | On the private fixture: the whole card fits 11,000 tokens; identity never trimmed; nothing cut mid-card |
 | R8 | **Port to Sputnik + protocol diff.** Same code, city pack enabled; proposed `GEMINI.md` diff replacing the whole-file reads with `read_wake_card` + `recall` | Audrie reviews the diff. Then one read-only test wake (F0 method) shows the new orientation size |
 
 ### Write half (after the read half is reviewed)
