@@ -125,7 +125,7 @@ the mind server: Stage 0 has to work in the harness the agent runs today.
 Keep everything environment-neutral: nothing in the index or sleep may know
 about the city (CA study 3 moves the same mind to other worlds).
 
-### S0.3 Two halves
+### S0.3 Three parts
 
 - **Bounded reads (the associative index).** Each wake loads a small,
   relevant slice, and no read can exceed its budget (CA invariant 8).
@@ -179,7 +179,8 @@ where they differ.
 - **A wake digest with a hard budget.** One startup read that returns: the
   identity core (soul, governance, goals: always whole, never trimmed), the
   continuity core, the top active threads, and the newest mission log. Budget
-  in tokens, set in config, **refused rather than truncated** if exceeded.
+  in tokens, set in config. If exceeded, return the whole cards that fit and
+  name the rest (INDEX-SPEC §7, F6). Refuse only if no card fits.
 - **Cue-driven reads for the rest.** `recall(tags or text, limit)` returns
   the best-matching entries within a per-call budget, plus what was searched
   and what was left out.
