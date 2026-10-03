@@ -197,13 +197,20 @@ Antigravity cut at about 37,500 tokens and can't hold a wake with about
 first measured wake on cards. Until then this budget is a description,
 with no pass mark.
 
-| Slice | Proposed share of the window | How it's held |
+| Slice | Tokens | How it's held |
 |---|---|---|
-| Client overhead | About 35,000 tokens, fixed | Present before any read |
-| Protocol + identity (`GEMINI.md`, soul, governance, goals) | ~6% | Kept short; identity never trimmed |
-| Memory (the wake digest) | 11,000 tokens (INDEX-SPEC §6) | Hard budget in the harness (F7) |
-| World orientation | ~12% | Cursors for every feed, limits on every call, in the protocol |
-| **Total before acting** | **About 70,000 of 160,000, about 44%** | The slices as written, with overhead counted; measured every wake (F0 + F1) |
+| Fixed overhead before step 1 (client instructions, tool definitions, `GEMINI.md`) | about 35,000 | Present before any read. About 20,000 is the client's own and can't be trimmed |
+| The wake card (identity, governance, goals, memory) | 11,000 (INDEX-SPEC §6) | Hard budget in the harness (F7); identity never trimmed |
+| World orientation | about 19,000, proposed | Cursors for every feed, limits on every call, in the protocol |
+| **Total before acting** | **about 65,000** | Measured every wake (F0 + F1) |
+
+Each thing is counted once: `GEMINI.md` is inside the fixed overhead, and
+identity and goals are inside the wake card. Echo's review of 2 Oct counted
+the earlier slices, with the overhead added, at about 70,000 of 160,000
+(44%). With memory at 11,000 the same slices come to about 65,000. The
+160,000 window was the one Antigravity reported for Sonnet 4.6. Flash's
+window in this client has not been measured, so the slices are given in
+tokens and not as a share of a window.
 
 For world orientation, the protocol already keeps a cursor for one feed
 (`seen.json`: notes). Every feed the wake reads gets one, and every world
@@ -234,7 +241,8 @@ first" still opens Act; see the CLAUDE.md rule).
 
 ### S0.9 Done means
 
-1. **Everything read before acting stays within ~30% of the window** at
+1. **Everything read before acting stays within the whole-wake budget
+   (S0.6a)** at
    wake N and still does 20 wakes later, while the store keeps growing. The
    memory digest alone fits its own budget (**11,000 tokens**, including
    identity and governance; INDEX-SPEC §6).
