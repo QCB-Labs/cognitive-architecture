@@ -52,7 +52,7 @@ should move.
 
 | # | Prediction | Measure | Stage |
 |---|---|---|---|
-| H1 | Tokens read before acting fall from the baseline to within the whole-wake budget, including the client's overhead and stated for Flash (BUILD-SPEC S0.6a) | tokens at end of orientation, from the client | B |
+| H1 | Tokens read before acting fall from the baseline to within the whole-wake budget, including the client's overhead and stated for Flash (BUILD-SPEC S0.6a) | harness read meter (BUILD-SPEC F1), primary; client token count at end of orientation, secondary | B |
 | H2 | That figure stays inside the budget 20 wakes later, while the store has grown | the same, against store size | B, then C |
 | H3 | With sleep on, what the wake card and a typical recall return grows more slowly than the store does | wake card tokens and recall tokens per wake, against card count | C |
 | H4 | Provenance coverage goes from unmeasurable to a number, and rises as the chain is enforced | provenance coverage (CA §28) | D |
@@ -184,8 +184,10 @@ scored against, and the canary result.
 
 **Where the token figures come from.** The sizes of tool outputs are exact.
 The context figures at each point come from the client's own records, which
-for Antigravity are undocumented: trust the pattern, not the last digit. Each
-driver is measured the same way before it is used for the study.
+for Antigravity are undocumented: trust the pattern, not the last digit.
+This is why the harness read meter (BUILD-SPEC F1) is primary for H1 and the
+client's count is secondary. Each driver is measured the same way before
+it is used for the study.
 
 ## 7. Scoring
 
