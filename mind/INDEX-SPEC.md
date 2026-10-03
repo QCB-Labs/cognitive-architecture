@@ -65,7 +65,7 @@ still produced, as read-only views, so humans and git history can read them.
 | `text` | agent | The card's content, in the agent's words. Markdown allowed |
 | `title` | agent (optional) | Short label. For threads: the bold heading line |
 | `tags` | system | Extracted by code from `text` and `title` (§4). Never written by the model |
-| `status` | system, on agent request | `live`, `done`, `superseded`, `merged`, `recheck` |
+| `status` | system, on agent request | `live`, `done`, `superseded`, `merged`, `recheck`, `structure` |
 | `links` | agent or system | List of `{rel, to}`. `rel` in §2.3 |
 | `created_at` | system | UTC time the card was first written |
 | `updated_at` | system | UTC time of the last change |
@@ -74,6 +74,10 @@ still produced, as read-only views, so humans and git history can read them.
 | `channel` | system | How it arrived: `session`, `email`, `world`, `migration` |
 | `weight` | system | Findability, 0.0–1.0. Starts at 1.0. Sleep lowers it. Never deletes |
 | `origin` | system (migration only) | File and position the card was cut from |
+
+`structure` marks a piece that holds only a file's shape, such as a heading
+or a preface. It is kept so the file can be rebuilt byte for byte. It is
+left out of the wake card and of recall. Built in Sputnik `773ff06`.
 
 **Rule:** the model never sets `id`, `tags`, `created_at`, `updated_at`,
 `wake`, `source`, `channel`, `weight` or `origin`. If a write tries to, refuse
