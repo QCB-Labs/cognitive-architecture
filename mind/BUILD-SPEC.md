@@ -78,7 +78,10 @@ Limit reported in both: 160,000.
 | Square: profile/status | 20,030 | 5,000 |
 | City: `city.me` | 25,905 | 6,500 |
 | City: feed catch-up (9 pages of changes) | ~17,400 | 4,300 |
-| **Total before acting** | | **~125,000** |
+| **Total before acting (test 1)** | | **~119,500** |
+
+Test 2 ended at about 124,000 tokens, and test 1 stopped before orientation
+finished.
 
 **The fixed overhead, broken down (estimates):** `GEMINI.md` ~5,400; harness
 tool definitions ~5,000; the city's tool catalog ~3,600 (44 tools, 14.5 KB);
