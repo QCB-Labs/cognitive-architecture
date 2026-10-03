@@ -276,6 +276,10 @@ build for stage D is not counted here.
 | 2026-09-30 | Probes moved out of real wakes into sealed sessions, canary first (§5) | A probe inside a real wake is remembered, and contaminates the next one |
 | 2026-09-30 | Stage 0 (bounded reads, bounded growth) added as stages B and C, ahead of the mind server | He could not wake inside his context; nothing else can be tested until he can |
 | 2026-10-01 | v0.2 written. Hypotheses rebuilt around the frozen scope: H1–H3 bounded, H4–H5 traceable, G1–G3 guards. Waiting-thread probe and ground-truth sample added. Second-model step (old step 10) moved to study 2 | To match the decisions above; the ground-truth sample because provenance coverage measures traceability, not truth |
+| 2026-10-03 | Whole-wake budget includes client overhead and is stated for Flash (§2, BUILD-SPEC S0.6a) | Echo's review of 2 Oct; overhead uses part of the window |
+| 2026-10-03 | Harness read meter is primary for H1 and the client count is secondary (§2, §6) | Echo's review of 2 Oct; the client's records are undocumented |
+| 2026-10-03 | Read log records session kind and sleep counts only wake lines (§5, INDEX-SPEC §7, BUILD-SPEC S0.7) | Echo's review of 2 Oct; sealed and read-only sessions must not affect sleep |
+| 2026-10-03 | Relay probe and its claims name the stranger limit (§5, §11) | Echo's review of 2 Oct; trusted peers exert a stronger pull |
 
 ## 13. Open questions
 
