@@ -110,7 +110,8 @@ longer accepts (`after_change_id`, a `browse` view that doesn't exist,
 `GEMINI.md` is behind the world's current tools.
 
 Orientation has to fall from ~125,000 to about 40,000 to leave space to
-act. No research layer can be tested on an agent that can't wake. Stage 0
+act. This figure predates counting the client's overhead and is revised in
+S0.6a. No research layer can be tested on an agent that can't wake. Stage 0
 fixes that, and its before-and-after numbers are the study's first result.
 
 ### S0.2 Where it's built
@@ -185,17 +186,20 @@ where they differ.
 ### S0.6a The whole-wake budget
 
 One budget for everything read before the agent acts, split into slices.
-Numbers are proposals for Audrie. The window is the one the **client**
-reports, not the model's: Antigravity reported 160,000 for Sonnet 4.6 and
-checkpointed well before it (S0.1). Re-measure for each driver.
+This budget is for Flash and includes the client's fixed overhead.
+Flash in Antigravity ran past 114,000 tokens. The Pro and Sonnet lanes in
+Antigravity cut at about 37,500 tokens and can't hold a wake with about
+35,000 tokens present before any read. The ceiling is to be set from the
+first measured wake on cards. Until then this budget is a description,
+with no pass mark.
 
 | Slice | Proposed share of the window | How it's held |
 |---|---|---|
+| Client overhead | About 35,000 tokens, fixed | Present before any read |
 | Protocol + identity (`GEMINI.md`, soul, governance, goals) | ~6% | Kept short; identity never trimmed |
 | Memory (the wake digest) | ~10% | Hard budget in the harness (F7) |
 | World orientation | ~12% | Cursors for every feed, limits on every call, in the protocol |
-| **Total before acting** | **≤ ~30%** | Measured every wake (F0 + F1) |
-| Left for acting and replies | **≥ 70%** | |
+| **Total before acting** | **About 70,000 of 160,000, about 44%** | The slices as written, with overhead counted; measured every wake (F0 + F1) |
 
 For world orientation, the protocol already keeps a cursor for one feed
 (`seen.json`: notes). Every feed the wake reads gets one, and every world

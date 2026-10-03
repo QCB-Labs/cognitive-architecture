@@ -52,7 +52,7 @@ should move.
 
 | # | Prediction | Measure | Stage |
 |---|---|---|---|
-| H1 | Tokens read before acting fall from the baseline to within the whole-wake budget (BUILD-SPEC S0.6a) | tokens at end of orientation, from the client | B |
+| H1 | Tokens read before acting fall from the baseline to within the whole-wake budget, including the client's overhead and stated for Flash (BUILD-SPEC S0.6a) | tokens at end of orientation, from the client | B |
 | H2 | That figure stays inside the budget 20 wakes later, while the store has grown | the same, against store size | B, then C |
 | H3 | With sleep on, what the wake card and a typical recall return grows more slowly than the store does | wake card tokens and recall tokens per wake, against card count | C |
 | H4 | Provenance coverage goes from unmeasurable to a number, and rises as the chain is enforced | provenance coverage (CA §28) | D |
