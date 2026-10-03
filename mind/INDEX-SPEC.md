@@ -296,16 +296,26 @@ new card is made. Nothing is silently reassigned.
 ## 6. The wake card
 
 One tool, `read_wake_card`, replaces the whole-file reads at the start of a
-wake. Five sections, always in this order, always present (write "none" when
-empty):
+wake. Eight sections, always in this order, always present (write "none" when
+empty). The table is the card as built at Sputnik `5448e4f`:
 
 | # | Section | Contents | Budget |
 |---|---|---|---|
 | 1 | **Who I am** | identity and governance, whole | not trimmed, counted in the whole-card budget |
-| 2 | **What I was doing** | the last `handover` card; `live` goals | 3,000 tokens |
-| 3 | **What I owe** | `live` commitments, oldest first | 2,000 tokens |
-| 4 | **What needs checking** | cards with status `recheck`; cards whose `supersedes` chain changed in the last wake | 2,000 tokens |
-| 5 | **What's here** | `live` threads and relationships whose tags match where the agent is now and who is present (passed in as tags) | 4,000 tokens |
+| 2 | **What I was doing** | the last `handover` card; `live` goals | 1,600 tokens |
+| 3 | **What I owe** | `live` commitments, oldest first | 400 tokens |
+| 4 | **Open threads (index)** | one line for each `live` thread: id, title, place and resident tags. A thread that doesn't fit is named by id | 1,200 tokens |
+| 5 | **Decisions** | `live` decision cards, in file order. Being retired with the continuity file (decided 2026-10-03) | 700 tokens |
+| 6 | **Rules** | `live` rule cards. Rules waiting to be checked are counted, not shown | 600 tokens |
+| 7 | **What needs checking** | cards with status `recheck`; cards whose `supersedes` chain changed in the last wake | 300 tokens |
+| 8 | **What's here** | `live` threads and relationships whose tags match where the agent is now and who is present (passed in as tags) | 100 tokens |
+
+Sections 2 to 8 add to 4,900 tokens. Identity and governance are about
+4,560 today, so the card is about 9,500 at most, inside the 11,000 total.
+A test in Sputnik fails if identity plus the section budgets could exceed
+one client view. Section 8 is empty in practice: the protocol reads the
+card before it knows where the agent is, and recalls by place and person
+in the next step.
 
 - Budgets are in config. The total for the whole card is **11,000 tokens**,
   including identity and governance (Audrie, 2026-10-03). Measured on
@@ -331,7 +341,10 @@ empty):
   `updated_at`. No embeddings in v0.
 - Per-call budget in config (proposed 4,000 tokens). **Over budget
   returns what fits, whole cards only, best match first,** and names every
-  card left out by id, kind and title so it can be read with `read_card`. No
+  card left out by id, kind, title, size and source file so it can be read
+  with `read_card`. A card with no title is named by its first line
+  (2026-10-03: a mission log left out of a recall could not be told from
+  any other card). No
   card is ever cut. It is refused only when not even the best match fits.
   (Changed 2026-10-01: v0 refused the whole call. In the first test wake on
   cards, `recall(tags=["place:1146"])` matched 19,824 tokens against 4,000 and
@@ -390,7 +403,7 @@ This is the "seal" in `BUILD-SPEC.md` §7, in its first form.
 | R4 | **Round trip.** Views regenerated from cards | Every original file recovered exactly (§5.3), on both fixtures |
 | R5 | **Re-cut on file write** (§5.4) | Tests: editing one entry in a file changes one card; other card IDs stay the same; an entry is edited while another is inserted above it, with removals and insertions first and edits second; if the edited entry cannot be matched, its old card is marked removed and a new card is made, with no silent reassignment |
 | R6 | **`recall` and `read_card`** with budget and read log | Tests: over budget returns the cards that fit and names the rest; refused only if no card fits; a recall leaves `cards.jsonl` byte-identical |
-| R7 | **`read_wake_card`**, five sections, budgets in config | On the private fixture: the whole card fits 11,000 tokens; identity never trimmed; nothing cut mid-card |
+| R7 | **`read_wake_card`**, eight sections, budgets in config | On the private fixture: the whole card fits 11,000 tokens; identity never trimmed; nothing cut mid-card |
 | R8 | **Port to Sputnik + protocol diff.** Same code, city pack enabled; proposed `GEMINI.md` diff replacing the whole-file reads with `read_wake_card` + `recall` | Audrie reviews the diff. Then one read-only test wake (F0 method) shows the new orientation size |
 
 ### Write half (after the read half is reviewed)
@@ -411,11 +424,12 @@ This is the "seal" in `BUILD-SPEC.md` §7, in its first form.
 
 | # | Question | Default |
 |---|---|---|
-| Q1 | Section budgets (§6) | 3k / 2k / 2k / 4k = 11k |
+| Q1 | Section budgets (§6) | Decided 2026-10-03: 11,000 for the whole card, section budgets as in §6 |
 | Q2 | Who confirms rule vs reflection | Sputnik, in a normal wake, told first in conversation |
 | Q3 | Does `city_rules` merge into `rule` cards or stay a separate file | Merge, with a `source` of `self`. **Read side done 1 Oct** (§5.2a): his rulebook's entries are `rule` cards with status from their section. Write side is W7 |
 | Q5 | One door for what he learns: retire `propose_city_rule` and the separate rulebook (W7)? | Yes, in the write half. Audrie leans yes (1 Oct); not yet decided |
 | Q4 | Mission logs: keep five-per-wake reading anywhere? | No. Handover + recall replace it |
+| Q6 | A short synopsis card for a long mission log, so one log can't take a whole recall (Sputnik's suggestion, 3 Oct) | Yes, as a sleep step. Not designed yet |
 
 ---
 
