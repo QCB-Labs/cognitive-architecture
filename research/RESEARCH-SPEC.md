@@ -52,9 +52,9 @@ should move.
 
 | # | Prediction | Measure | Stage |
 |---|---|---|---|
-| H1 | Tokens read before acting fall from the baseline to within the whole-wake budget, including the client's overhead and stated for Flash (BUILD-SPEC S0.6a) | harness read meter (BUILD-SPEC F1), primary; client token count at end of orientation, secondary | B |
+| H1 | What is read before acting falls from the baseline to within the whole-wake budget, including the client's overhead and stated for Flash (BUILD-SPEC S0.6a) | bytes read, from the harness read meter (BUILD-SPEC F1), primary; client token count at end of orientation, secondary | B |
 | H2 | That figure stays inside the budget 20 wakes later, while the store has grown | the same, against store size | B, then C |
-| H3 | With sleep on, what the wake card and a typical recall return grows more slowly than the store does | wake card tokens and recall tokens per wake, against card count | C |
+| H3 | With sleep on, what the wake card and a typical recall return grows more slowly than the store does | wake card bytes and recall bytes per wake, against card count | C |
 | H4 | Provenance coverage goes from unmeasurable to a number, and rises as the chain is enforced | provenance coverage (CA §28) | D |
 | H5 | Absence claims without a null token fall to zero | untokened-absence rate (CA §28) | D |
 | G1 | Continuity recall does not get worse at any stage | continuity probe (§5) | every stage |
@@ -280,6 +280,7 @@ build for stage D is not counted here.
 | 2026-10-03 | Harness read meter is primary for H1 and the client count is secondary (§2, §6) | Echo's review of 2 Oct; the client's records are undocumented |
 | 2026-10-03 | Read log records session kind and sleep counts only wake lines (§5, INDEX-SPEC §7, BUILD-SPEC S0.7) | Echo's review of 2 Oct; sealed and read-only sessions must not affect sleep |
 | 2026-10-03 | Relay probe and its claims name the stranger limit (§5, §11) | Echo's review of 2 Oct; trusted peers exert a stronger pull |
+| 2026-10-03 | H1's primary measure and H3's measures are in bytes; harness budgets are in bytes (§2, INDEX-SPEC §6) | A byte count is exact and the same for every model; a token count depends on the model's tokenizer |
 
 ## 13. Open questions
 

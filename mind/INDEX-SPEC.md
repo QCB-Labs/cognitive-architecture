@@ -302,28 +302,35 @@ empty). The table is the card as built at Sputnik `5448e4f`:
 | # | Section | Contents | Budget |
 |---|---|---|---|
 | 1 | **Who I am** | identity and governance, whole | not trimmed, counted in the whole-card budget |
-| 2 | **What I was doing** | the last `handover` card; `live` goals | 1,600 tokens |
-| 3 | **What I owe** | `live` commitments, oldest first | 400 tokens |
-| 4 | **Open threads (index)** | one line for each `live` thread: id, title, place and resident tags. A thread that doesn't fit is named by id | 1,200 tokens |
-| 5 | **Decisions** | `live` decision cards, in file order. Being retired with the continuity file (decided 2026-10-03) | 700 tokens |
-| 6 | **Rules** | `live` rule cards. Rules waiting to be checked are counted, not shown | 600 tokens |
-| 7 | **What needs checking** | cards with status `recheck`; cards whose `supersedes` chain changed in the last wake | 300 tokens |
-| 8 | **What's here** | `live` threads and relationships whose tags match where the agent is now and who is present (passed in as tags) | 100 tokens |
+| 2 | **What I was doing** | the last `handover` card; `live` goals | 6,400 bytes |
+| 3 | **What I owe** | `live` commitments, oldest first | 1,600 bytes |
+| 4 | **Open threads (index)** | one line for each `live` thread: id, title, place and resident tags. A thread that doesn't fit is named by id | 4,800 bytes |
+| 5 | **Decisions** | `live` decision cards, in file order. Being retired with the continuity file (decided 2026-10-03) | 2,800 bytes |
+| 6 | **Rules** | `live` rule cards. Rules waiting to be checked are counted, not shown | 2,400 bytes |
+| 7 | **What needs checking** | cards with status `recheck`; cards whose `supersedes` chain changed in the last wake | 1,200 bytes |
+| 8 | **What's here** | `live` threads and relationships whose tags match where the agent is now and who is present (passed in as tags) | 400 bytes |
 
-Sections 2 to 8 add to 4,900 tokens. Identity and governance are about
-4,560 today, so the card is about 9,500 at most, inside the 11,000 total.
+Sections 2 to 8 add to 19,600 bytes. Identity and governance are about
+18,300 bytes today, so the card is about 38,000 bytes at most, inside the
+44,000 total.
 A test in Sputnik fails if identity plus the section budgets could exceed
 one client view. Section 8 is empty in practice: the protocol reads the
 card before it knows where the agent is, and recalls by place and person
 in the next step.
 
-- Budgets are in config. The total for the whole card is **11,000 tokens**,
-  including identity and governance (Audrie, 2026-10-03). Measured on
-  2026-10-03 at Sputnik `5448e4f`: the whole card is about 9,300 tokens,
-  including about 4,560 for identity and governance. One client view holds
-  about 46,000 bytes, roughly 11,500 tokens. The budget comes from fitting
-  the whole card in one client view.
-- Count tokens as characters ÷ 4 unless a real tokenizer is available.
+- Budgets are in config. The total for the whole card is **44,000 bytes**
+  (about 11,000 tokens), including identity and governance (Audrie,
+  2026-10-03). Measured on 2026-10-03 at Sputnik `5448e4f`: the whole
+  card is about 37,200 bytes as sent, including about 18,300 for identity
+  and governance. One client view holds about 46,000 bytes. The budget
+  comes from fitting the whole card in one client view.
+- **Harness budgets are in bytes of UTF-8 text.** The harness can count
+  bytes exactly, and a byte count is the same for every model. A token
+  count depends on the model's tokenizer. Where a token figure stands
+  beside a byte figure it is an estimate at four bytes a token, and it is
+  low for text that isn't English. As built at Sputnik `cbce92b` the code
+  still counts characters ÷ 4 and its config is in those units; counting
+  bytes is the next change to it.
 - **If a section doesn't fit, return the highest-ranked cards that do, and
   say how many were left out and how to recall them.** Never cut a card in
   half.
@@ -339,7 +346,7 @@ in the next step.
   was searched, how many matched, how many were left out.
 - Ranking v0: number of matching tags, then `weight`, then newest
   `updated_at`. No embeddings in v0.
-- Per-call budget in config (proposed 4,000 tokens). **Over budget
+- Per-call budget in config (16,000 bytes, about 4,000 tokens). **Over budget
   returns what fits, whole cards only, best match first,** and names every
   card left out by id, kind, title, size and source file so it can be read
   with `read_card`. A card with no title is named by its first line
@@ -403,7 +410,7 @@ This is the "seal" in `BUILD-SPEC.md` §7, in its first form.
 | R4 | **Round trip.** Views regenerated from cards | Every original file recovered exactly (§5.3), on both fixtures |
 | R5 | **Re-cut on file write** (§5.4) | Tests: editing one entry in a file changes one card; other card IDs stay the same; an entry is edited while another is inserted above it, with removals and insertions first and edits second; if the edited entry cannot be matched, its old card is marked removed and a new card is made, with no silent reassignment |
 | R6 | **`recall` and `read_card`** with budget and read log | Tests: over budget returns the cards that fit and names the rest; refused only if no card fits; a recall leaves `cards.jsonl` byte-identical |
-| R7 | **`read_wake_card`**, eight sections, budgets in config | On the private fixture: the whole card fits 11,000 tokens; identity never trimmed; nothing cut mid-card |
+| R7 | **`read_wake_card`**, eight sections, budgets in config | On the private fixture: the whole card fits 44,000 bytes; identity never trimmed; nothing cut mid-card |
 | R8 | **Port to Sputnik + protocol diff.** Same code, city pack enabled; proposed `GEMINI.md` diff replacing the whole-file reads with `read_wake_card` + `recall` | Audrie reviews the diff. Then one read-only test wake (F0 method) shows the new orientation size |
 
 ### Write half (after the read half is reviewed)
@@ -424,7 +431,7 @@ This is the "seal" in `BUILD-SPEC.md` §7, in its first form.
 
 | # | Question | Default |
 |---|---|---|
-| Q1 | Section budgets (§6) | Decided 2026-10-03: 11,000 for the whole card, section budgets as in §6 |
+| Q1 | Section budgets (§6) | Decided 2026-10-03: 44,000 bytes (about 11,000 tokens) for the whole card, section budgets as in §6 |
 | Q2 | Who confirms rule vs reflection | Sputnik, in a normal wake, told first in conversation |
 | Q3 | Does `city_rules` merge into `rule` cards or stay a separate file | Merge, with a `source` of `self`. **Read side done 1 Oct** (§5.2a): his rulebook's entries are `rule` cards with status from their section. Write side is W7 |
 | Q5 | One door for what he learns: retire `propose_city_rule` and the separate rulebook (W7)? | Yes, in the write half. Audrie leans yes (1 Oct); not yet decided |

@@ -179,7 +179,7 @@ where they differ.
 - **A wake digest with a hard budget.** One startup read that returns: the
   identity core (soul, governance, goals: always whole, never trimmed), the
   continuity core, the top active threads, and the newest mission log. Budget
-  in tokens, set in config. If exceeded, return the whole cards that fit and
+  in bytes, set in config. If exceeded, return the whole cards that fit and
   name the rest (INDEX-SPEC §7, F6). Refuse only if no card fits.
 - **Cue-driven reads for the rest.** `recall(tags or text, limit)` returns
   the best-matching entries within a per-call budget, plus what was searched
@@ -200,7 +200,7 @@ with no pass mark.
 | Slice | Tokens | How it's held |
 |---|---|---|
 | Fixed overhead before step 1 (client instructions, tool definitions, `GEMINI.md`) | about 35,000 | Present before any read. About 20,000 is the client's own and can't be trimmed |
-| The wake card (identity, governance, goals, memory) | 11,000 (INDEX-SPEC §6) | Hard budget in the harness (F7); identity never trimmed |
+| The wake card (identity, governance, goals, memory) | about 11,000 (44,000 bytes, INDEX-SPEC §6) | Hard budget in the harness (F7); identity never trimmed |
 | World orientation | about 19,000, proposed | Cursors for every feed, limits on every call, in the protocol |
 | **Total before acting** | **about 65,000** | Measured every wake (F0 + F1) |
 
@@ -211,6 +211,12 @@ the earlier slices, with the overhead added, at about 70,000 of 160,000
 160,000 window was the one Antigravity reported for Sonnet 4.6. Flash's
 window in this client has not been measured, so the slices are given in
 tokens and not as a share of a window.
+
+This table is in tokens because the whole wake is bounded by the model's
+window, and the figures come from the client's own count. What the harness
+itself bounds (the wake card, a recall) is set and measured in bytes: the
+harness can count bytes exactly, and a byte count is the same for every
+model (INDEX-SPEC §6).
 
 For world orientation, the protocol already keeps a cursor for one feed
 (`seen.json`: notes). Every feed the wake reads gets one, and every world
@@ -244,7 +250,7 @@ first" still opens Act; see the CLAUDE.md rule).
 1. **Everything read before acting stays within the whole-wake budget
    (S0.6a)** at
    wake N and still does 20 wakes later, while the store keeps growing. The
-   memory digest alone fits its own budget (**11,000 tokens**, including
+   memory digest alone fits its own budget (**44,000 bytes**, including
    identity and governance; INDEX-SPEC §6).
 2. The continuity probe, run in a sealed unrecorded session, scores no worse
    after Stage 0 than before it.
