@@ -282,6 +282,11 @@ writing files the old way. After each file write, the harness re-cuts that
 file into cards (same IDs for unchanged entries: match by `origin` and
 text). This keeps the read half safe to ship on its own.
 
+When a write both removes or inserts entries and edits others, the re-cut
+runs in two passes. Removals and insertions run first. Edits run second.
+If an edited entry can't be matched, its old card is marked removed and a
+new card is made. Nothing is silently reassigned.
+
 ---
 
 ## 6. The wake card
@@ -379,7 +384,7 @@ This is the "seal" in `BUILD-SPEC.md` §7, in its first form.
 | R2 | **Tag extractor + config.** Generic patterns in the template; city pack as a separate config file; the tag test set | Tag test set passes; fails once on a broken pattern |
 | R3 | **Migration.** Cut each logical file into cards per §5.1; kind proposals per §5.2 | Runs on the made-up fixture and the private fixture; `kind-review.md` produced |
 | R4 | **Round trip.** Views regenerated from cards | Every original file recovered exactly (§5.3), on both fixtures |
-| R5 | **Re-cut on file write** (§5.4) | Tests: editing one entry in a file changes one card; other card IDs stay the same |
+| R5 | **Re-cut on file write** (§5.4) | Tests: editing one entry in a file changes one card; other card IDs stay the same; an entry is edited while another is inserted above it, with removals and insertions first and edits second; if the edited entry cannot be matched, its old card is marked removed and a new card is made, with no silent reassignment |
 | R6 | **`recall` and `read_card`** with budget and read log | Tests: over budget returns the cards that fit and names the rest; refused only if no card fits; a recall leaves `cards.jsonl` byte-identical |
 | R7 | **`read_wake_card`**, five sections, budgets in config | On the private fixture: the whole card fits 11,000 tokens; identity never trimmed; nothing cut mid-card |
 | R8 | **Port to Sputnik + protocol diff.** Same code, city pack enabled; proposed `GEMINI.md` diff replacing the whole-file reads with `read_wake_card` + `recall` | Audrie reviews the diff. Then one read-only test wake (F0 method) shows the new orientation size |
