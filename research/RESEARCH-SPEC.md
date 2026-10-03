@@ -149,8 +149,10 @@ remember, and the next probe would then be measuring his memory of the test.
 
 **The canary comes first.** Before any sealed session is trusted, one is run
 with a marker phrase planted in it. His repo and card store are then checked
-for the marker and for any change at all. A sealed session counts only once
-that check has passed, and has been made to fail once on purpose.
+for the marker and for any change at all. The read log is checked too.
+A sealed session passes only if every line it added is marked `sealed`.
+A sealed session counts only once that check has passed, and has been made
+to fail once on purpose.
 
 | Probe | How | Scored |
 |---|---|---|

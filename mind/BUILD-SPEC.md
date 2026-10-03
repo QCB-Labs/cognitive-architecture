@@ -217,7 +217,7 @@ model is a later option (see the idea file).
 - Link entries that share tags heavily as *possible duplicates* (a flag, not
   a merge).
 - Lower the findability of threads the agent has closed and of entries not
-  read in N wakes.
+  read in N wakes. Sleep counts only `wake` lines in the read log.
 - Summarise mission logs older than N wakes into a digest entry that points
   at the originals. The originals stay.
 - Write only **derived** entries and weight changes. Never edit a raw entry.

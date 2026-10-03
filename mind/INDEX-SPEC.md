@@ -329,8 +329,10 @@ empty):
   returned nothing, so the protocol's own Step 9 call failed at his home
   place.)
 - **Reads never write.** Every recall is logged to
-  `{memory}/cards/reads.jsonl` (time, wake, query, ids returned). Being read
-  changes nothing on the card.
+  `{memory}/cards/reads.jsonl` (time, wake, query, ids returned, session kind:
+  `wake`, `sealed`, or `read-only`). Sealed and read-only lines are kept as
+  evidence for later. Only `wake` lines count as the card having been read.
+  Being read changes nothing on the card.
 - `read_card(id)` returns one card, any status, with its history on request.
 
 ---
