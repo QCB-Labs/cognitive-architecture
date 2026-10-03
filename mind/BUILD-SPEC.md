@@ -352,6 +352,10 @@ and kept as audit, never used.
 | commitment | `to`, `what`, `by`, `evidence_of_done` | ≥1 episode recording the promise |
 | refusal | `call`, `failed_check`, `reason`, `what_would_pass` | the server writes these. Every refusal is itself an observation (CA §24.2) |
 
+In v0.1 the server refuses `operator` provenance on `propose`. Nothing can
+yet tell a real operator ruling from one a model wrote. `self` is accepted.
+This restriction lifts when keeper signing exists.
+
 ---
 
 ## 4. The validator
@@ -476,7 +480,7 @@ after each for review.
 | T1 | Skeleton: server boots on loopback, refuses non-loopback, `config.json`, flags, `whoami` | Tests: binding to `0.0.0.0` is refused; `whoami` returns the server clock |
 | T2 | Record store: append-only JSONL, server fields, `claimed_*`, audit log | Tests: model-supplied `id`/`at` are moved; the byte-for-byte append-only test (§4.4) |
 | T3 | `observe` and the observation layer (L1) | Tests: an observation is immutable; `external_origin` is set for non-self channels |
-| T4 | The chain (L1–L2): percept, episode, belief, impression, procedure; the validator steps 1–5 and 8; `inspect` | Tests: a belief with no chain is refused; `used_in` links build; origin propagates and can't be cleared |
+| T4 | The chain (L1–L2): percept, episode, belief, impression, procedure; the validator steps 1–5 and 8; `inspect` | Tests: a belief with no chain is refused; `used_in` links build; origin propagates and can't be cleared; `propose` refuses `operator` provenance in v0.1 and accepts `self` |
 | T5 | `recall` with server budgets and the searched space | Tests: `limit` above the budget is refused, not truncated |
 | T6 | Null token, canary, degraded (L3); validator step 6 | The three fail-once tests in §6 |
 | T7 | Contest and `resolve`; threads with defaults; commitments | Tests: a thread without a default is refused; the loser of `resolve` stays readable |
