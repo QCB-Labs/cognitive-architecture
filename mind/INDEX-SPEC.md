@@ -302,7 +302,7 @@ empty). The table is the card as built at Sputnik `376c5d2` (2026-10-04):
 | # | Section | Contents | Budget |
 |---|---|---|---|
 | 1 | **Who I am** | identity and governance, whole | not trimmed, counted in the whole-card budget |
-| 2 | **What I was doing** | the last `handover` card; `live` goals | 8,000 bytes |
+| 2 | **What I was doing** | the last `handover` card; `live` goals | 10,000 bytes |
 | 3 | **What I owe** | `live` commitments, oldest first | 1,600 bytes |
 | 4 | **Open threads (index)** | one line for each `live` thread: id, title, place and resident tags. A thread that doesn't fit is named by id | 4,800 bytes |
 | 5 | **Rules** | `live` rule cards. Rules waiting to be checked are counted, not shown | 2,400 bytes |
@@ -313,8 +313,8 @@ There was an eighth section, Decisions, built from the continuity file.
 That file was retired on 2026-10-03 and the section went with it. `decision`
 stays a valid card kind, so old cards still load.
 
-Sections 2 to 7 add to 18,400 bytes. Identity and governance are about
-18,300 bytes today, so the card is about 36,700 bytes at most, inside the
+Sections 2 to 7 add to 20,400 bytes. Identity and governance are about
+18,300 bytes today, so the card is about 38,700 bytes at most, inside the
 44,000 total.
 A test in Sputnik fails if identity plus the section budgets could exceed
 one client view. Section 7 is empty in practice: the protocol reads the
@@ -327,9 +327,10 @@ in the next step.
   card is 34,027 bytes, including about 18,300 for identity and
   governance. One client view holds about 46,000 bytes. The budget comes
   from fitting the whole card in one client view.
-- **Section 2 was raised from 6,400 to 8,000 bytes on 2026-10-04**
-  (Audrie). With no handover card it holds the last log's plan and the
-  goals together, and at 6,400 the largest goal card was left out.
+- **Section 2 was raised from 6,400 to 8,000 bytes, then to 10,000, on
+  2026-10-04** (Audrie). With no handover card it holds the last log's plan
+  and the goals together. At 6,400 the largest goal card was left out; at
+  8,000, after one real wake added goals, two cards were.
 - **Harness budgets are in bytes of UTF-8 text.** The harness can count
   bytes exactly, and a byte count is the same for every model. A token
   count depends on the model's tokenizer. Where a token figure stands
