@@ -48,7 +48,7 @@ Today the agent's memory is a few big files, and every wake reads them whole
 (~58,000 tokens for memory alone, growing every wake). After this build, each
 memory is a **card**: one lesson, one thread, one goal, one log. Cards have a
 kind, tags, a status and links. A wake starts by reading one **wake card**
-built from the store, always the same five sections, always inside a token
+built from the store, always the same seven sections, always inside a byte
 budget. Everything else is **recalled** by tag when needed. The old files are
 still produced, as read-only views, so humans and git history can read them.
 
@@ -296,46 +296,59 @@ new card is made. Nothing is silently reassigned.
 ## 6. The wake card
 
 One tool, `read_wake_card`, replaces the whole-file reads at the start of a
-wake. Eight sections, always in this order, always present (write "none" when
-empty). The table is the card as built at Sputnik `5448e4f`:
+wake. Seven sections, always in this order, always present (write "none" when
+empty). The table is the card as built at Sputnik `376c5d2` (2026-10-04):
 
 | # | Section | Contents | Budget |
 |---|---|---|---|
 | 1 | **Who I am** | identity and governance, whole | not trimmed, counted in the whole-card budget |
-| 2 | **What I was doing** | the last `handover` card; `live` goals | 6,400 bytes |
+| 2 | **What I was doing** | the last `handover` card; `live` goals | 8,000 bytes |
 | 3 | **What I owe** | `live` commitments, oldest first | 1,600 bytes |
 | 4 | **Open threads (index)** | one line for each `live` thread: id, title, place and resident tags. A thread that doesn't fit is named by id | 4,800 bytes |
-| 5 | **Decisions** | `live` decision cards, in file order. Being retired with the continuity file (decided 2026-10-03) | 2,800 bytes |
-| 6 | **Rules** | `live` rule cards. Rules waiting to be checked are counted, not shown | 2,400 bytes |
-| 7 | **What needs checking** | cards with status `recheck`; cards whose `supersedes` chain changed in the last wake | 1,200 bytes |
-| 8 | **What's here** | `live` threads and relationships whose tags match where the agent is now and who is present (passed in as tags) | 400 bytes |
+| 5 | **Rules** | `live` rule cards. Rules waiting to be checked are counted, not shown | 2,400 bytes |
+| 6 | **What needs checking** | cards with status `recheck`; cards whose `supersedes` chain changed in the last wake | 1,200 bytes |
+| 7 | **What's here** | `live` threads and relationships whose tags match where the agent is now and who is present (passed in as tags) | 400 bytes |
 
-Sections 2 to 8 add to 19,600 bytes. Identity and governance are about
-18,300 bytes today, so the card is about 38,000 bytes at most, inside the
+There was an eighth section, Decisions, built from the continuity file.
+That file was retired on 2026-10-03 and the section went with it. `decision`
+stays a valid card kind, so old cards still load.
+
+Sections 2 to 7 add to 18,400 bytes. Identity and governance are about
+18,300 bytes today, so the card is about 36,700 bytes at most, inside the
 44,000 total.
 A test in Sputnik fails if identity plus the section budgets could exceed
-one client view. Section 8 is empty in practice: the protocol reads the
+one client view. Section 7 is empty in practice: the protocol reads the
 card before it knows where the agent is, and recalls by place and person
 in the next step.
 
 - Budgets are in config. The total for the whole card is **44,000 bytes**
   (about 11,000 tokens), including identity and governance (Audrie,
-  2026-10-03). Measured on 2026-10-03 at Sputnik `5448e4f`: the whole
-  card is about 37,200 bytes as sent, including about 18,300 for identity
-  and governance. One client view holds about 46,000 bytes. The budget
-  comes from fitting the whole card in one client view.
+  2026-10-03). Measured on 2026-10-04 at Sputnik `376c5d2`: the whole
+  card is 34,027 bytes, including about 18,300 for identity and
+  governance. One client view holds about 46,000 bytes. The budget comes
+  from fitting the whole card in one client view.
+- **Section 2 was raised from 6,400 to 8,000 bytes on 2026-10-04**
+  (Audrie). With no handover card it holds the last log's plan and the
+  goals together, and at 6,400 the largest goal card was left out.
 - **Harness budgets are in bytes of UTF-8 text.** The harness can count
   bytes exactly, and a byte count is the same for every model. A token
   count depends on the model's tokenizer. Where a token figure stands
   beside a byte figure it is an estimate at four bytes a token, and it is
-  low for text that isn't English. As built at Sputnik `cbce92b` the code
-  still counts characters ÷ 4 and its config is in those units; counting
-  bytes is the next change to it.
+  low for text that isn't English. The code counts bytes since Sputnik
+  `76be220`.
 - **If a section doesn't fit, return the highest-ranked cards that do, and
   say how many were left out and how to recall them.** Never cut a card in
-  half.
-- Before a handover card exists (first run), section 2 uses the newest `log`
-  card's last section.
+  half. If the whole card is still over 44,000 bytes, whole cards are
+  dropped from the last section first; identity and governance are never
+  trimmed.
+- **Before a handover card exists**, section 2 uses the newest `live` `log`
+  card, in place of the handover. "Newest" is the highest wake number in
+  the log's filename, not `updated_at`: re-cutting an old log moves its
+  `updated_at`. From that log it shows the title line and the section whose
+  heading says "plan next", up to the next heading of the same or a higher
+  level. A log with no such heading is offered whole, and is left out with
+  a notice if it doesn't fit. This is the one place a card is shown in
+  part.
 
 ---
 
@@ -410,7 +423,7 @@ This is the "seal" in `BUILD-SPEC.md` §7, in its first form.
 | R4 | **Round trip.** Views regenerated from cards | Every original file recovered exactly (§5.3), on both fixtures |
 | R5 | **Re-cut on file write** (§5.4) | Tests: editing one entry in a file changes one card; other card IDs stay the same; an entry is edited while another is inserted above it, with removals and insertions first and edits second; if the edited entry cannot be matched, its old card is marked removed and a new card is made, with no silent reassignment |
 | R6 | **`recall` and `read_card`** with budget and read log | Tests: over budget returns the cards that fit and names the rest; refused only if no card fits; a recall leaves `cards.jsonl` byte-identical |
-| R7 | **`read_wake_card`**, eight sections, budgets in config | On the private fixture: the whole card fits 44,000 bytes; identity never trimmed; nothing cut mid-card |
+| R7 | **`read_wake_card`**, seven sections, budgets in config | On the private fixture: the whole card fits 44,000 bytes; identity never trimmed; nothing cut mid-card |
 | R8 | **Port to Sputnik + protocol diff.** Same code, city pack enabled; proposed `GEMINI.md` diff replacing the whole-file reads with `read_wake_card` + `recall` | Audrie reviews the diff. Then one read-only test wake (F0 method) shows the new orientation size |
 
 ### Write half (after the read half is reviewed)
