@@ -357,8 +357,16 @@ in the next step.
 `recall(tags=[...], text=None, kinds=None, limit=10)`:
 - Returns the best-matching `live` cards (and `recheck`, marked), plus: what
   was searched, how many matched, how many were left out.
-- Ranking v0: number of matching tags, then `weight`, then newest
-  `updated_at`. No embeddings in v0.
+- Ranking v0: number of matching tags, then `weight`, then kind, then
+  recency. No embeddings in v0.
+  - Kind: among cards that match equally well, `relationship`, `thread`,
+    `commitment` and `handover` cards come first and `log` cards last
+    (Audrie, 2026-10-04). A mission log runs to 10,000 bytes or more. In a
+    test wake a recall by place and resident returned one log, which used
+    the budget, and left out the 2,358-byte card about the resident asked
+    for.
+  - Recency: `log` cards by the wake number in their filename, other cards
+    by `updated_at`. Re-cutting an old log moves its `updated_at`.
 - Per-call budget in config (16,000 bytes, about 4,000 tokens). **Over budget
   returns what fits, whole cards only, best match first,** and names every
   card left out by id, kind, title, size and source file so it can be read
