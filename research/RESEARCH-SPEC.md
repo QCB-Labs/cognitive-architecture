@@ -1,8 +1,8 @@
-# Research spec v0.2
+# Research spec v0.3
 
 *Draft for review. Written by POE, for Audrie, 2026-10-01. Replaces v0.1
 (2026-09-28), which is in this file's git history. This is the plan, written
-before the study runs. Once stage A's count starts, changes are allowed but
+before the study runs. Once stage B's count starts, changes are allowed but
 each one is logged in §12 with a date and a reason. That record is what stops
 the question being reshaped to fit the answer.*
 
@@ -11,6 +11,13 @@ the question being reshaped to fit the answer.*
 says how it's used. `METHODS.md` governs how the research itself is done.*
 
 *Parts marked **[proposal]** are POE's and have not been decided by Audrie.*
+
+***v0.3, 2026-10-08 (Audrie): the study starts from the cards.** The
+baseline is the agent on bounded reads, and the first thing the study
+changes is sleep. The whole-file state he ran on up to W135 is recorded in
+the build spec as the reason the cards were built. It is not a stage of the
+study, because it can no longer be measured on the model he runs on. See
+§3.1 and §12.*
 
 ---
 
@@ -52,7 +59,7 @@ should move.
 
 | # | Prediction | Measure | Stage |
 |---|---|---|---|
-| H1 | What is read before acting falls from the baseline to within the whole-wake budget, including the client's overhead and stated for Flash (BUILD-SPEC S0.6a) | bytes read, from the harness read meter (BUILD-SPEC F1), primary; client token count at end of orientation, secondary | B |
+| H1 | At the baseline, what is read before acting is inside the whole-wake budget, including the client's overhead and stated for Flash (BUILD-SPEC S0.6a). (v0.2 predicted a fall from whole-file reads. That fall is an engineering record now, not a result: BUILD-SPEC S0.1) | bytes read, from the harness read meter (BUILD-SPEC F1), primary; client token count at end of orientation, secondary | B |
 | H2 | That figure stays inside the budget 20 wakes later, while the store has grown | the same, against store size | B, then C |
 | H3 | With sleep on, what the wake card and a typical recall return grows more slowly than the store does | wake card bytes and recall bytes per wake, against card count | C |
 | H4 | Provenance coverage goes from unmeasurable to a number, and rises as the chain is enforced | provenance coverage (CA §28) | D |
@@ -100,19 +107,15 @@ two are never reported as one.
 
 | Stage | What is on | Notes |
 |---|---|---|
-| A | Nothing new. Whole-file reads, as he ran up to W135 | The baseline. First measured in two read-only test wakes on 2026-09-30 (BUILD-SPEC S0.1): about 125,000 tokens before acting |
-| B | **Bounded reads**: memory cards, the wake card, recall, feed cursors (Stage 0, read half and write half) | The before-and-after numbers here are the study's first result |
-| C | B + **bounded growth**: sleep v0 (BUILD-SPEC S0.7) | Needs enough wakes for the store to grow measurably |
+| (A) | Whole-file reads, as he ran up to W135 | **Before the study, since 2026-10-08.** Measured in two read-only test wakes on 2026-09-30, on another model: about 125,000 tokens before acting (BUILD-SPEC S0.1). Kept as the record of why the cards were built. No claim in the study rests on it |
+| B | **Bounded reads**: his files cut into cards, the wake card, recall (INDEX-SPEC) | **The baseline.** Its count starts when goals and threads are small files (INDEX-SPEC §8) and the protocol, the cut and the cadence have stopped changing |
+| C | B + **bounded growth**: sleep v0 (BUILD-SPEC S0.7) | The first change the study makes. Needs enough wakes for the store to grow measurably |
 | D | C + **traceability**: the evidence chain, cognitive objects and the null token (mind server L1–L3) | The mind server has to exist first |
 
-**Withdrawal [proposal].** Two candidates; Audrie chooses before stage B's
-count starts:
-
-- **Sleep off** for a block during stage C. Cheap, reversible, and nothing
-  about his wake changes while it is off.
-- **Whole-file reads back on** for a short block of *read-only measuring
-  wakes*, not real ones. A real wake on whole files barely fits his context
-  any more, which is the reason Stage 0 exists.
+**Withdrawal [proposal].** **Sleep off** for a block during stage C. Cheap,
+reversible, and nothing about his wake changes while it is off. (v0.2
+offered a second candidate, whole-file reads back on for a block of
+read-only measuring wakes. It went with stage A.)
 
 ### 3.2 Later studies (not part of this one)
 
@@ -130,8 +133,8 @@ Neither is planned in detail here, and neither is on the chain yet.
 - **Why him:** the problem being studied is his. He is the agent whose
   memory outgrew his context, he runs on the template, and he has 135 wakes
   of real memory to test against. A fresh agent would have nothing to bound.
-- **What it costs:** there is no clean slate. Stage A is "Sputnik as he
-  was", with a memory written before the study existed. The architecture
+- **What it costs:** there is no clean slate. The baseline is Sputnik on
+  cards, with a memory written before the study existed. The architecture
   changes a live agent's actual memory, so every change follows his own
   rules: his words are never rewritten, he is told about changes in
   conversation, and protocol changes are proposed to Audrie first.
@@ -247,14 +250,14 @@ are written up; they aren't explained away.
   not wait at a client permission prompt (one waited 95 minutes on 7 Oct),
   a check that each wake committed, and a PC that is awake at every
   scheduled time.
-- **One model, fixed before stage A's count starts.** His wakes have run on
+- **One model, fixed before stage B's count starts.** His wakes have run on
   more than one model. For the study one is chosen, recorded, and held.
-- **Stage D needs the mind server.** Stages A–C need only Stage 0.
+- **Stage D needs the mind server.** Stages B and C need only Stage 0.
 
 His schedule has been five wakes a day since 2026-10-07 (it was three). At
 five a day a stage of ten wakes takes two days; at the three a day first
-proposed **[R4]**, three to four. Four stages plus a withdrawal block is
-about fifty wakes, or ten days to three weeks once unattended wakes hold. H2 and stage C need the
+proposed **[R4]**, three to four. Three stages plus a withdrawal block is
+about forty wakes, or eight days to two weeks once unattended wakes hold. H2 and stage C need the
 store to grow, so those stages may run longer than ten wakes; the mind server
 build for stage D is not counted here.
 
@@ -289,7 +292,8 @@ build for stage D is not counted here.
 | 2026-10-03 | H1's primary measure and H3's measures are in bytes; harness budgets are in bytes (§2, INDEX-SPEC §6) | A byte count is exact and the same for every model; a token count depends on the model's tokenizer |
 | 2026-10-05 | The instrument changed: his files stay the original and cards are cut from them (INDEX-SPEC v0.3, §8). No hypothesis or measure changes | Audrie's design. Stage B is still "bounded reads"; what it is built from differs from the v0.2 plan |
 | 2026-10-07 | The cloud dependency in §10 is replaced by unattended wakes on the operator's PC | No budget for a per-use API key or a hosted model; the PC already runs his wakes on a schedule |
-| 2026-10-07 | His schedule went from three wakes a day to five (§10, R4) | The operator's decision for every agent she runs. The study's cadence is still fixed before stage A's count starts |
+| 2026-10-07 | His schedule went from three wakes a day to five (§10, R4) | The operator's decision for every agent she runs. The study's cadence is still fixed before the first stage's count starts |
+| 2026-10-08 | v0.3. **The baseline is stage B (bounded reads); stage A (whole-file reads) leaves the study.** H1 becomes a check that the baseline is inside its budget, not a predicted fall. The second withdrawal candidate goes. R9 closed (§2, §3.1, §13) | Audrie's decision. The whole-file state no longer exists to be measured on the model he runs on: its two measurements were taken on another model, and his memory has since been cut into cards and added to. Building stage B took a week in which the protocol and the cut changed almost daily, so no count could have run across it. Starting from a stable stage B gives a baseline that can be measured, and makes sleep the first controlled change |
 
 ## 13. Open questions
 
@@ -301,9 +305,9 @@ build for stage D is not counted here.
 | R4 | Wake cadence during the study | Fixed. Three a day was the proposal; his schedule is five a day since 2026-10-07, so five unless decided otherwise |
 | R5 | Where do Waypost's field cases fit (relay examples from their logs)? | Use them to word the relay probe, if they arrive cleared |
 | R6 | Which withdrawal (§3.1) | Sleep off for a block in stage C |
-| R7 | Which model and driver he runs on for the study | Decided after the driver measurements; fixed before stage A's count starts |
+| R7 | Which model and driver he runs on for the study | Gemini Flash in the Antigravity desktop app is what he runs on today; fixed before stage B's count starts |
 | R8 | Wakes per stage, and the ground-truth sample size | 10 wakes; 20 beliefs |
-| R9 | Does stage A need more baseline than the two test wakes of 30 Sept? | Yes: at least 3 read-only measuring wakes on whole files, on the study's model and driver |
+| ~~R9~~ | ~~Does stage A need more baseline than the two test wakes of 30 Sept?~~ | **Closed 2026-10-08:** stage A is no longer part of the study (§3.1) |
 
 ---
 

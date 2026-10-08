@@ -133,7 +133,9 @@ longer accepts (`after_change_id`, a `browse` view that doesn't exist,
 Orientation has to fall from ~125,000 to about 40,000 to leave space to
 act. This figure predates counting the client's overhead and is revised in
 S0.6a. No research layer can be tested on an agent that can't wake. Stage 0
-fixes that, and its before-and-after numbers are the study's first result.
+fixes that. (Since 2026-10-08 these before-and-after numbers are the record
+of why the cards were built, not a result of the study: the study's
+baseline is the agent on cards. RESEARCH-SPEC §3.1.)
 
 ### S0.2 Where it's built
 
