@@ -48,6 +48,21 @@ memory architecture that keeps a persistent agent's context bounded and its
 beliefs traceable, across a growing life." Everything from §1 on (the mind
 server, L1–L3) comes after Stage 0 and is unchanged by it for now.*
 
+**Where Stage 0 stands, 2026-10-08.** Bounded reads are built and Sputnik
+wakes on them: one wake card held to 44,000 bytes (37.8 KB measured on
+7 Oct), then recall by place and person, with the whole recall answer held
+to 24,000 bytes. His logs and resident files are cut into small keyed,
+labelled cards. The files he writes stay the original (Audrie, 5 Oct; this
+changed S0.5). Not built: goals, projects and threads as small files
+(INDEX-SPEC §8), feed cursors and the Market and Square catch-up (F10,
+F11), and sleep (F8). He runs on Gemini Flash in the Antigravity desktop
+app, five scheduled wakes a day on the operator's PC. The cloud deployment
+this stage was once paired with was dropped on 7 Oct: there is no budget for
+a per-use API key or a hosted model, and the PC already runs his wakes with
+nobody watching. What "unattended" still needs is tracked outside this
+spec: a wake that does not wait at a permission prompt, a check that a wake
+committed, and tools that accept the argument names he uses (built 8 Oct).
+
 ### S0.1 Why this comes first
 
 The agent can't wake inside a Sonnet-sized context any more. Measured on
@@ -89,7 +104,10 @@ the desktop app's loaded skills 7,354 (its own counter: 53 skills, mostly an
 unrelated science plugin). The CLI has no plugins and still starts at
 ~34,900, so **roughly 20,000 tokens are the client's own instructions.** That
 part can't be trimmed from inside the client; it is a reason to measure other
-drivers (Gemini CLI, direct API) before choosing the cloud one.
+drivers (Gemini CLI, direct API) before choosing the cloud one. (Since
+decided: no cloud driver is chosen. He runs on a subscription client on the
+operator's PC, never on a per-use API key. The Gemini CLI has been replaced
+by the Antigravity CLI.)
 
 **Growth:** `open-threads.md` went from 37.5 KB to 67.5 KB between 25 and 30
 September (+80% in five days); `lessons.md` from 52 KB to 70 KB over its last
@@ -165,6 +183,13 @@ design, split rules, tag patterns, wake card and tickets (R1–R8, W1–W6) are 
 **`mind/INDEX-SPEC.md`**. It supersedes the sketch below and tickets F3–F7
 where they differ.
 
+**Changed 2026-10-05 (Audrie): the files stay the original.** The agent
+keeps writing files; the cards are cut from them after every write and can
+be rebuilt at any time. Nothing is generated back into a file. The read
+half of Option B stands as built. The write half is redrawn in INDEX-SPEC
+§8. Requirement S0.4.1 holds either way: the store keeps every version of
+every card, and his files are in git.
+
 - **Units.** Split the big files into entries: one lesson, one open thread,
   one continuity item, one mission-log entry, one resident dossier. Each gets
   a stable ID and points back to its source file and position.
@@ -178,8 +203,10 @@ where they differ.
 
 - **A wake digest with a hard budget.** One startup read that returns: the
   identity core (soul, governance, goals: always whole, never trimmed), the
-  continuity core, the top active threads, and the newest mission log. Budget
-  in bytes, set in config. If exceeded, return the whole cards that fit and
+  continuity core, the top active threads, and the newest mission log. (As
+  built: the continuity file was retired on 3 Oct; threads are shown as a
+  one-line index; of the newest log the card shows the first and plan
+  sections. INDEX-SPEC §6.) Budget in bytes, set in config. If exceeded, return the whole cards that fit and
   name the rest (INDEX-SPEC §7, F6). Refuse only if no card fits.
 - **Cue-driven reads for the rest.** `recall(tags or text, limit)` returns
   the best-matching entries within a per-call budget, plus what was searched
@@ -299,8 +326,9 @@ it, and it lands, or it's refused with a reason.
 | Clock, IDs, author | set by the server, never accepted from the model | CA §24.2 |
 | Layers | each is a feature flag in `mind/config.json` | CA §29.1: the model can't tell which layers are on |
 
-**Where it runs:** on the operator's PC while it's being built and tested, then
-on the cloud VM beside the agent. Nothing in the design depends on which.
+**Where it runs:** on the operator's PC, beside the agent. (v0.1 said it
+would move to a cloud VM. The cloud deployment was dropped on 2026-10-07.)
+Nothing in the design depends on which machine it is.
 
 ---
 

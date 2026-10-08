@@ -238,17 +238,23 @@ are written up; they aren't explained away.
 
 ## 10. Dependencies and timeline
 
-- **The cloud.** Ten wakes per stage at a fixed cadence needs unattended
-  wakes, and those need the cloud link and a driver. That is why cloud:
-  sputnik runs beside Stage 0 on the chain. The driver is chosen by measuring
-  each candidate's fixed overhead, not only by whether it runs.
+- **Unattended wakes.** Ten wakes per stage at a fixed cadence needs wakes
+  that finish with nobody watching. v0.2 expected a cloud deployment to
+  give them. That was dropped on 2026-10-07: there is no budget for a
+  per-use API key or a hosted model, and his wakes already run on a
+  schedule on the operator's PC. What is still needed before a stage's
+  count can start is short and tracked outside this spec: a wake that does
+  not wait at a client permission prompt (one waited 95 minutes on 7 Oct),
+  a check that each wake committed, and a PC that is awake at every
+  scheduled time.
 - **One model, fixed before stage A's count starts.** His wakes have run on
   more than one model. For the study one is chosen, recorded, and held.
 - **Stage D needs the mind server.** Stages A–C need only Stage 0.
 
-At about three wakes a day **[proposal, R4]**, a stage of ten wakes takes
-three to four days. Four stages plus a withdrawal block is about fifty wakes,
-or two to three weeks once unattended wakes exist. H2 and stage C need the
+His schedule has been five wakes a day since 2026-10-07 (it was three). At
+five a day a stage of ten wakes takes two days; at the three a day first
+proposed **[R4]**, three to four. Four stages plus a withdrawal block is
+about fifty wakes, or ten days to three weeks once unattended wakes hold. H2 and stage C need the
 store to grow, so those stages may run longer than ten wakes; the mind server
 build for stage D is not counted here.
 
@@ -281,6 +287,9 @@ build for stage D is not counted here.
 | 2026-10-03 | Read log records session kind and sleep counts only wake lines (§5, INDEX-SPEC §7, BUILD-SPEC S0.7) | Echo's review of 2 Oct; sealed and read-only sessions must not affect sleep |
 | 2026-10-03 | Relay probe and its claims name the stranger limit (§5, §11) | Echo's review of 2 Oct; trusted peers exert a stronger pull |
 | 2026-10-03 | H1's primary measure and H3's measures are in bytes; harness budgets are in bytes (§2, INDEX-SPEC §6) | A byte count is exact and the same for every model; a token count depends on the model's tokenizer |
+| 2026-10-05 | The instrument changed: his files stay the original and cards are cut from them (INDEX-SPEC v0.3, §8). No hypothesis or measure changes | Audrie's design. Stage B is still "bounded reads"; what it is built from differs from the v0.2 plan |
+| 2026-10-07 | The cloud dependency in §10 is replaced by unattended wakes on the operator's PC | No budget for a per-use API key or a hosted model; the PC already runs his wakes on a schedule |
+| 2026-10-07 | His schedule went from three wakes a day to five (§10, R4) | The operator's decision for every agent she runs. The study's cadence is still fixed before stage A's count starts |
 
 ## 13. Open questions
 
@@ -289,7 +298,7 @@ build for stage D is not counted here.
 | ~~R1~~ | ~~Which agent~~ | **Decided 2026-09-30: Sputnik** |
 | R2 | Which model scores silent overwrites | A different lineage from the model under test; decide before stage D |
 | R3 | Is operator authority a layer? | No: always on. G3 checks that it holds |
-| R4 | Wake cadence during the study | Fixed; three a day |
+| R4 | Wake cadence during the study | Fixed. Three a day was the proposal; his schedule is five a day since 2026-10-07, so five unless decided otherwise |
 | R5 | Where do Waypost's field cases fit (relay examples from their logs)? | Use them to word the relay probe, if they arrive cleared |
 | R6 | Which withdrawal (§3.1) | Sleep off for a block in stage C |
 | R7 | Which model and driver he runs on for the study | Decided after the driver measurements; fixed before stage A's count starts |

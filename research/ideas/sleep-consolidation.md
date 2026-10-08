@@ -81,7 +81,8 @@ doesn't work that way: during sleep the brain replays the day, files what
 matters and prunes the rest, and the person never knows it happened.
 
 So: give the agent a **sleep**. Between wakes, a small open-source model runs
-on the agent's own machine (the cloud VM, or this PC) and does the filing:
+on the agent's own machine (this PC; a cloud VM was dropped on 2026-10-07)
+and does the filing:
 
 - **Tags and links** new memory entries (the associative index).
 - **Shrinks** big things: a week of mission logs into one page.
@@ -102,6 +103,10 @@ switch it off (CA §27.1, model independence).
 | "Is this lesson superseded?" | 7–8B chat model | Noticeably better judgement; overnight speed is fine |
 
 ## Rough fit on the free Oracle Arm VM (estimates, not measured)
+
+*Kept as a record. The cloud deployment was dropped on 2026-10-07, so sleep
+would run on the operator's PC (a GTX 1080 Ti with 11 GB, 24 GB of RAM),
+which is a better fit for a small local model than this VM was.*
 
 2 cores, 12 GB, no GPU (Oracle's page, checked 2026-09-29: 1,500 OCPU-hours
 and 9,000 GB-hours a month, "equivalent to 2 OCPUs and 12 GB").

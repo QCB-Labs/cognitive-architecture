@@ -6,7 +6,7 @@ that tests it.
 | Folder | Holds |
 |---|---|
 | [`spec/`](spec/) | The Cognitive Architecture specification and its verification record |
-| [`mind/`](mind/) | The mind server: an MCP server that holds the agent's ledgers and validates every write. Not built yet. |
+| [`mind/`](mind/) | Two build specs. `INDEX-SPEC.md`: memory cut into cards, a bounded wake card and recall. Its read half is built in the agent's harness and in use. `BUILD-SPEC.md`: the mind server, an MCP server that holds the agent's ledgers and validates every write. Not built yet. |
 | [`research/`](research/) | The research spec, protocols, metric scripts and published results |
 
 The baseline agent is
