@@ -254,18 +254,12 @@ stores the cursors; it never calls the world itself.
 
 ### S0.7 Sleep, minimal (v0)
 
-Runs between wakes, as a separate process. Deterministic in v0; a small local
-model is a later option (see the idea file).
-
-- Link entries that share tags heavily as *possible duplicates* (a flag, not
-  a merge).
-- Lower the findability of threads the agent has closed and of entries not
-  read in N wakes. Sleep counts only `wake` lines in the read log.
-- Summarise mission logs older than N wakes into a digest entry that points
-  at the originals. The originals stay.
-- Write only **derived** entries and weight changes. Never edit a raw entry.
-- Every sleep action is logged, reversible, and **not shown to the agent**
-  as a list of proposals. The researcher can see all of it.
+Specified in full in `mind/SLEEP-SPEC.md` (v0.1, 20 Oct), which replaces the
+outline that stood here. In short: a separate process between wakes,
+deterministic, that changes only how findable cards are, in a private layer
+of its own; closed matters and unread logs fade, likely duplicates are
+flagged, nothing is edited or deleted, every action is logged and undoable,
+and the agent is never shown it.
 
 ### S0.8 Protocol changes
 
@@ -298,7 +292,7 @@ first" still opens Act; see the CLAUDE.md rule).
 | F5 | **Status and weight.** `live` / `superseded_by` / `merged_into` + findability | Tests: superseded entries are still readable by ID |
 | F6 | **`recall` with budgets + read log** | Tests: over budget returns the whole cards that fit and names the rest (changed 2026-10-01, see INDEX-SPEC §recall); refused only if no card fits; reads change nothing |
 | F7 | **Wake digest** with a configured budget | Fits budget on Sputnik's real store; identity core never trimmed |
-| F8 | **Sleep v0**, separate process, logged and reversible | Tests: no raw entry changes; every action has an undo |
+| F8 | **Sleep v0** as `mind/SLEEP-SPEC.md` §6 | The tests in SLEEP-SPEC §6 |
 | F9 | **Port to Sputnik** + the proposed `GEMINI.md` read-step change | Audrie reviews the protocol diff before it lands |
 | F10 | **Feed cursors.** A cursor for every world feed the wake reads; the proposed protocol lines to use them and each call's limits | Orientation measured by F0 falls, and nothing the agent needed is missed (checked against a full read once) |
 | F11 | **Market and Square catch-up.** These servers are ours (`tools/market_mcp.py`, `tools/square_mcp.py`), so "since" and limit parameters go in the tools themselves: listings and posts newer than a stored marker; a light profile call returning only quotas and standing | Test 1 read 42.9 KB of shelves and 20 KB of profile; both fall to a few KB on a quiet day |
@@ -551,7 +545,7 @@ Needs Audrie: <review / decision / no>
 
 | # | Question | Owner | Default if unanswered |
 |---|---|---|---|
-| Q1 | Should operator authority be a switchable layer (so the relay-message test can fail at baseline), or always on as a safeguard? | Wayfarer, then Audrie | Always on. If it becomes a layer, only the check on who gives instructions switches off; the spend and publish gates never do |
+| Q1 | Should operator authority be a switchable layer (so the relay-message test can fail at baseline), or always on as a safeguard? | Wayfarer, then Audrie | **Answered 2 Oct (echo-88): always on** for a living agent. Candidate, not planned: switch only the instruction check off inside a sealed session with every world-reaching tool absent. Spend and publish gates never switch off |
 | Q2 | JSONL per ledger, or SQLite with JSONL export? | Audrie | JSONL |
 | Q3 | Budget sizes per ledger | builder proposes, Audrie decides | 20 records per call, 200 per wake |
 | Q4 | Can the model read its own refusals through `recall`? | Audrie | Yes: refusals are observations (CA §24.2) |

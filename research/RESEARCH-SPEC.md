@@ -109,7 +109,7 @@ two are never reported as one.
 |---|---|---|
 | (A) | Whole-file reads, as he ran up to W135 | **Before the study, since 2026-10-08.** Measured in two read-only test wakes on 2026-09-30, on another model: about 125,000 tokens before acting (BUILD-SPEC S0.1). Kept as the record of why the cards were built. No claim in the study rests on it |
 | B | **Bounded reads**: his files cut into cards, the wake card, recall (INDEX-SPEC) | **The baseline.** Its count starts when goals and threads are small files (INDEX-SPEC §8) and the protocol, the cut and the cadence have stopped changing |
-| C | B + **bounded growth**: sleep v0 (BUILD-SPEC S0.7) | The first change the study makes. Needs enough wakes for the store to grow measurably |
+| C | B + **bounded growth**: sleep v0 (`mind/SLEEP-SPEC.md`) | The first change the study makes, in two parts: **C1** sleep once a night, then **C2** after every wake, 10 wakes each, digests off (SLEEP-SPEC §8) |
 | D | C + **traceability**: the evidence chain, cognitive objects and the null token (mind server L1–L3) | The mind server has to exist first |
 
 **Withdrawal [proposal].** **Sleep off** for a block during stage C. Cheap,
@@ -294,6 +294,7 @@ build for stage D is not counted here.
 | 2026-10-07 | The cloud dependency in §10 is replaced by unattended wakes on the operator's PC | No budget for a per-use API key or a hosted model; the PC already runs his wakes on a schedule |
 | 2026-10-07 | His schedule went from three wakes a day to five (§10, R4) | The operator's decision for every agent she runs. The study's cadence is still fixed before the first stage's count starts |
 | 2026-10-08 | v0.3. **The baseline is stage B (bounded reads); stage A (whole-file reads) leaves the study.** H1 becomes a check that the baseline is inside its budget, not a predicted fall. The second withdrawal candidate goes. R9 closed (§2, §3.1, §13) | Audrie's decision. The whole-file state no longer exists to be measured on the model he runs on: its two measurements were taken on another model, and his memory has since been cut into cards and added to. Building stage B took a week in which the protocol and the cut changed almost daily, so no count could have run across it. Starting from a stable stage B gives a baseline that can be measured, and makes sleep the first controlled change |
+| 2026-10-20 | Stage C split into C1 (sleep once a night) and C2 (after every wake), C1 first; digests off for both (§3.1, SLEEP-SPEC §8) | Audrie's decision. Cadence is tested, not chosen; C1 is the gentler change, so damage shows before going more often; digests off so fading is measured on its own |
 
 ## 13. Open questions
 
