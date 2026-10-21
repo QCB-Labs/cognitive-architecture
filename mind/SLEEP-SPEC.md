@@ -52,6 +52,8 @@ recalls logged since W202, read only): 70 of them reach history; with
 rule 4.2 applied, the history part of **47 of the 70 would change**. So the
 treatment has a real route to what he reads.
 
+**With links (LINKS-SPEC, draft).** Recall's linked list is ranked by the same weight, so sleep moves rarely used cards down the list, never off it while its tag is shared. That is the way back that makes fading safe.
+
 **What it does not do.** A faded log never moves ahead of, or behind, a
 current card; it competes only with other history of the same tag match.
 The wake card's newest log is chosen by log number and is never faded.
@@ -145,7 +147,7 @@ Ordinary recall doesn't return these cards at all, so this only orders
 `history=True` answers (finished projects and threads). Kept for
 completeness; its effect is reported, not assumed.
 
-### 5.3 Old logs get a digest (behind a switch, off in C1 and C2)
+### 5.3 Old logs get a digest (behind a switch, off in D1 and D2)
 
 Logs older than N closed wakes are covered by a weekly digest card: per
 wake, its number, title, and the plan and observations sections copied word
@@ -197,21 +199,24 @@ many cards faded, returned, were flagged as duplicates, which digests were
 written, and which guard stopped a run. Never sent to the agent, never on
 the wake card.
 
-## 8. The study: stages C1 and C2
+## 8. The study: stages D1 and D2
+
+*Draft change, 21 Oct evening: links become stage C (`mind/LINKS-SPEC.md`), so sleep is stage D and acts on the linked list. Not yet accepted by Audrie.*
 
 | Stage | Sleep | Digests | Wakes |
 |---|---|---|---|
 | B | off | — | 10 (the baseline) |
-| C1 | once a night | off | 10 |
-| C2 | after every wake | off | 10 |
+| C | off; links on | — | 10 |
+| D1 | once a night | off | 10 |
+| D2 | after every wake | off | 10 |
 | withdrawal | off | — | a block (RESEARCH-SPEC §3.1) |
 
-- **Each stage starts from an empty layer.** C2 does not inherit C1's
+- **Each stage starts from an empty layer.** D2 does not inherit D1's
   weights, so cadence and accumulated exposure aren't mixed. The previous
   layer is kept aside for the record.
-- **The read history is kept across stages**, so C1 doesn't spend its ten
+- **The read history is kept across stages**, so D1 doesn't spend its ten
   wakes below N. It covers W202 onward, the wakes with `closed` lines.
-- **Rules don't change between C1 and C2.** A change after C1 would change
+- **Rules don't change between D1 and D2.** A change after D1 would change
   the treatment as well as the cadence; it waits for the comparison to end,
   or is logged as a new stage.
 
@@ -233,7 +238,7 @@ against stage B's share.
 Same rules, but a night's actions are written as proposals and the next wake
 card shows a short section the agent can accept or refuse with one call.
 Cost: filing becomes part of what it reads every wake, which invisible sleep
-avoids. Built only if C1 or C2 shows damage review would have caught.
+avoids. Built only if D1 or D2 shows damage review would have caught.
 
 ## 10. What changed from v0.1, and why
 
@@ -250,7 +255,7 @@ avoids. Built only if C1 or C2 shows damage review would have caught.
 | Rules could conflict | Lower weight stands (§5) | 4.1 and 4.2 both touch done logs |
 | "80% of tags" | Jaccard ≥ 0.8, live cards, flags removed when stale (§5.4) | The share was undefined |
 | Off: move the layer aside | `enabled` setting; undo newest-first; atomic writes (§3) | The scheduler would rebuild a moved layer; undo order |
-| C2 continues C1 | Empty layer per stage; rules frozen across C1–C2 (§8) | Cadence and exposure mixed |
+| D2 continues D1 | Empty layer per stage; rules frozen across D1–D2 (§8) | Cadence and exposure mixed |
 | Damage: unfindable facts, faded reads | Plus self-reinforcement and a counterfactual (§8) | Fading by reads can feed on itself |
 
 ## 11. Build order and tests

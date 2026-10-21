@@ -872,6 +872,8 @@ Decay operates on accessibility and salience. Never on confidence.
 
 **Output:** a bounded packet. For example: 3 episodes, 2 beliefs, 1 social profile, 1 procedure, 2 goals. Never the full store.
 
+**Association (added 21 Oct, draft).** Retrieval can also follow links: recalling a person brings what is connected to them (threads, places, things, wakes) as a short ranked list of labels below the cards returned in full, so the chain stays one step away without filling the context. This document scored relationship and location relevance but never named association as a mechanism; it is first built as `mind/LINKS-SPEC.md` (study stage C). Its order follows accessibility (§11) and must not feed salience (§11.1).
+
 **The bound is enforced by the retrieval mechanism, not by the caller's parameters.** A caller must not be able to widen a query past the budget. An agent with a tunable relevance threshold will eventually tune it wide, and a result larger than the context window is a way for an agent to end itself. See §A.5.
 
 **Status: bounded, but not selective.** A fixed wake protocol retrieves the same things in the same order every session, whatever the session is about. Bounded is the important half and it is done. Selective is the missing half, and relevance scoring has nothing to score until §6 and §11 exist.
