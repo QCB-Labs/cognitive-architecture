@@ -443,6 +443,7 @@ is still in the file, byte for byte.
 | `propose(kind, record)` | runs the validator (§4) |
 | `recall(query, ledgers?, kinds?, since?, limit?)` | bounded search (§6) |
 | `inspect(id, depth?)` | a record, plus its chain back and its `used_in` forward, bounded to `depth` hops (max 5) |
+| `associate(id, rels?, depth?)` | **(added 21 Oct)** what is connected to a record by typed links (`about`, `from`, `serves`, `cites`; INDEX-SPEC §2.3), up to `depth` hops (default 2, max 3), as labels. Each hop counts for half the one before, ranked by that strength and accessibility (CA §11), into one capped list inside the recall answer limit: depth changes reach, never size. Reads nothing into salience (CA §11.1) |
 | `resolve(winner, loser, reason)` | writes a superseding record. The loser stays readable |
 | `thread_close(id, how)` | closes a thread |
 | `seal(keep, learned, not_owed)` | ends a wake (§7). Refused without `not_owed`; the literal `NONE` is allowed if it says what was checked |
@@ -526,6 +527,7 @@ after each for review.
 | T8 | Seal and the manifest chain | Tests: altering a ledger line is detected at the next wake |
 | T9 | Harness adapter: a small module the template harness calls to `observe` every tool result | Tests against a fake harness. Wiring it into the live template is a separate reviewed change |
 | T10 | Research outputs: the per-wake records `RESEARCH-SPEC.md` §6 needs | The research spec's metric scripts run on a fixture ledger |
+| T11 | **(added 21 Oct)** Typed links and `associate`: links written with a type and a reason (by the agent, or by the server where it can tell, e.g. a commitment's source thread); the walk with strength halving per hop | Tests: depth 3 returns no more labels than depth 1; a hop's strength is half the last; an untyped link is refused; nothing writes salience; the derived links of stage C (`mind/LINKS-SPEC.md`) give the same first hop |
 
 **Handoff block** at the end of each ticket, pasted into the
 cognitive-architecture thread log:

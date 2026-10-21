@@ -125,9 +125,11 @@ to fail once.
   groups come in a fixed order and items by link strength; with sleep
   (stage D) group order and item order both follow accessibility, so if #66
   lives in notes more than places, notes rise.
-- **One hop by default; two on request.** `recall(..., hops=2)` would follow
-  the list one step further for a deeper probe. It needs one line in his
-  protocol so he knows it exists: Audrie's decision, not in v0 until made.
+- **One hop only, in v0.** More hops over shared tags mostly add noise
+  (Halfverse: 902 cards at one hop). Deep chains follow typed links instead,
+  weaker at each hop, as `associate` in the mind server (BUILD-SPEC §5,
+  T11; CA §16). So there is no `hops` setting in v0 and no protocol line to
+  decide.
   **Multi-hop belongs to traceability.** "Why do I believe this?" is a
   walk of several steps by nature: a belief back to the episodes and
   observations behind it (CA §6). That walk follows typed links
