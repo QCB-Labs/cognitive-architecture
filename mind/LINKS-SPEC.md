@@ -24,12 +24,13 @@ resident card and current impression first, then the rest that fits the
 budget. **Below that comes a linked list:** the threads, places, things,
 notes and wakes connected to what was returned, as labels only (id, label,
 kind, size), ordered by how strongly they connect and, once sleep runs, by
-how recently he used them. Opening one is a read, and a read brings it back
-up.
+their sleep weights (§3). Opening one is a read; sleep applies its
+restoration rules at the next run.
 
 - **Bounded:** labels cost a few hundred bytes, not the cards.
-- **Continuity:** nothing linked becomes unreachable. A card he hasn't used
-  in a long time sits lower in the list; it doesn't leave it.
+- **Continuity:** a shared tag keeps a card eligible, but caps and answer
+  limits can hide its label. The recovery policy awaits the decision in
+  SLEEP-SPEC §2 (finding 4).
 - **Like memory, as far as it goes:** recalling one thing brings its
   associations to mind; what is used stays near, what isn't fades back, and
   using it again brings it forward. A guide for the design, not a claim
@@ -60,13 +61,17 @@ After recall chooses the cards it returns (unchanged from today):
    for (those are already the match).
 2. Candidates: live cards carrying any of those tags, not already returned
    or listed in `left_out_cards`.
-3. **Rank** by: the strength of the connection, then weight (sleep's, once
-   it exists; until then every card's own, so no effect), then newest
-   first. **Strength** counts each shared tag by how rare it is, so a hub
-   tag on hundreds of cards (his home place: 333) counts for little and a
-   tag on two cards counts for a lot: the sum over shared tags of
-   `1 / log2(1 + cards carrying the tag)`.
-4. List the first **12** (a setting, `recall_linked_listed`) as labels:
+3. **Rank within kind.** In C: strength descending, the card's own weight
+   descending, newest first, then card id ascending. In D: effective weight
+   descending, strength descending, newest first, then card id ascending.
+   Effective weight is the layer's weight when sleep is enabled and an
+   entry exists, otherwise the card's own. Newest means card date descending.
+   With sleep off or an empty layer, use C's order, including group order.
+   **Strength** is the sum over shared entity tags from step 1 of
+   `1 / log2(1 + cards carrying the tag)` in the live store.
+   A hub tag on hundreds of cards counts for little; a rare tag for more.
+4. Group by kind under §7a, apply each kind's cap, concatenate in group
+   order, then keep the first **12** (`recall_linked_listed`) as labels:
    id, label, kind, bytes, and the tag that links it.
 5. The list is the **first to give way** when the whole answer is over its
    limit, before `same_file`, `people` and `left_out_cards`. Card text is
@@ -86,10 +91,11 @@ list is ranked and capped, and why hub tags count for little.
 
 ## 5. With sleep (later)
 
-Sleep ranks the chain. A faded card moves down the linked list, never off
-it while its tag is shared. This is what makes fading safe: the way back is
-always shown. SLEEP-SPEC's self-reinforcement measure (§8 there) is read
-against this list.
+Sleep ranks the chain under §§3, 7a. A faded card remains a candidate
+while its tag is shared, but may fall beyond a kind cap, the total cap or
+the answer limit. A shown route back is not guaranteed. SLEEP-SPEC §2 has
+the options and recommendation for Audrie (finding 4); no option is selected
+here. Its self-reinforcement measure (§8 there) uses C as the reference.
 
 ## 6. What links never do
 
@@ -110,21 +116,30 @@ against this list.
    `link_tag_prefixes`. `0` turns the list off.
 
 **Tests:** with the list off, every recall answer is byte for byte what it
-is on `main` at the stage B freeze; the full cards returned and their order
-never change with the list on; the list never holds a returned or
-left-out card; a hub tag ranks below a rare one; the list gives way first
+is on `main` at the stage B freeze, with sleep off; with links on, sleep
+off and an enabled empty layer each preserve stage C byte for byte; the
+full cards returned and their order never change merely by enabling links;
+the list never holds a returned or left-out card; at equal weight, a hub
+tag ranks below a rare one; the list gives way first
 under the answer limit, and card text never does; offered ids are logged
-and never counted as reads; nothing in `memory/` changes. Each test is made
-to fail once.
+and never counted as reads; group scores, ties and item order follow §§3,
+7a, including caps and trimming; nothing in `memory/` changes. Each test
+is made to fail once.
 
 ## 7a. Decided in conversation, 21 Oct evening (Audrie)
 
 - **Grouped by kind.** The list comes in groups (threads, places, things,
   notes, wakes), each with a small cap; `note:` links at most 3, so precise
   but rare note tags can't crowd out people and places. In stage C the
-  groups come in a fixed order and items by link strength; with sleep
-  (stage D) group order and item order both follow accessibility, so if #66
-  lives in notes more than places, notes rise.
+  groups come in a fixed order; both group and item order follow
+  accessibility in D. **Proposed clarification, 23 Oct, finding 3:** use
+  the fixed order just listed in C, with items following §3. Any
+  other kinds follow in kind-name order. In D, a nonempty group's score is
+  the mean effective weight of all its candidates before caps. Groups sort
+  by score descending, with C's group order breaking ties; empty groups
+  are omitted. Items follow D's order in §3. Caps and trimming follow only
+  after ranking. This defines accessibility from the per-card weights;
+  no separate group state is added. Recovery remains undecided (§5).
 - **One hop only, in v0.** More hops over shared tags mostly add noise
   (Halfverse: 902 cards at one hop). Deep chains follow typed links instead,
   weaker at each hop, as `associate` in the mind server (BUILD-SPEC §5,
@@ -137,8 +152,8 @@ to fail once.
   doesn't fan out the way tag hops do (Halfverse: 902 cards at one hop). So
   deep chains are stage E's; association stays shallow.
 - **A links withdrawal is safe.** With the list off, recall is exactly what
-  stage B gives; he loses only the labels. Kept, so stage C's effect can be
-  told from time passing.
+  stage B gives when sleep is also off; he loses only the labels. Kept, so
+  stage C's effect can be told from time passing.
 - **No rumination (CA §11.1).** "Retrieval does not reinforce": being
   recalled never raises salience. The list's order follows use
   (accessibility, CA §11) but must not amplify it: a read restores a card's
