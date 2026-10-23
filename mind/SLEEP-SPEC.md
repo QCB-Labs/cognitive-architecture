@@ -201,7 +201,7 @@ the wake card.
 
 ## 8. The study: stages D1 and D2
 
-*Draft change, 21 Oct evening: links become stage C (`mind/LINKS-SPEC.md`), so sleep is stage D and acts on the linked list. Not yet accepted by Audrie.*
+*Changed 21 Oct evening, accepted by Audrie: links become stage C (`mind/LINKS-SPEC.md`), so sleep is stage D and acts on the linked list.*
 
 | Stage | Sleep | Digests | Wakes |
 |---|---|---|---|
