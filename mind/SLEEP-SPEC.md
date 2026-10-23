@@ -58,7 +58,7 @@ treatment has a real route to what he reads.
 groups under LINKS-SPEC §§3, 7a. Caps and answer limits can hide a faded
 card's label; a shared tag alone does not guarantee a shown route.
 
-> **Decision needed — finding 4: recovery under link caps (Audrie).**
+> **Decision — finding 4: recovery under link caps (Audrie).**
 >
 > 1. Keep the caps and trimming rule, withdraw the guarantee, and count
 >    faded candidates omitted by either limit. This measures the risk but
@@ -68,7 +68,7 @@ card's label; a shared tag alone does not guarantee a shown route.
 >    specified and tested first; the present list cannot provide it.
 >
 > **Recommendation:** option 1, with omissions beside the damage measures.
-> Neither option is selected. Stage D awaits Audrie's recovery decision.
+> **Decided (Audrie, 23 Oct): option 1.**
 
 **What it does not do.** A faded log never moves ahead of, or behind, a
 current card; it competes only with other history of the same tag match.
@@ -245,7 +245,7 @@ the wake card.
   sleep-off wakes. D2's N-wake window would include D1's ten wakes unless
   the operator changes the transition below.
 
-> **Decision needed — finding 1: D1 carryover into D2 (Audrie).**
+> **Decision — finding 1: D1 carryover into D2 (Audrie).**
 >
 > 1. Keep consecutive ten-wake stages and report D2 as following D1, not
 >    as an isolated cadence comparison. Empty weights do not remove
@@ -255,8 +255,8 @@ the wake card.
 >    clears D1 reads from the window but cannot undo what the agent learned.
 >
 > **Recommendation:** option 2 if comparing cadence remains the aim, with
-> remaining order and learning effects stated. Neither option is selected.
-> D2's transition and the cadence claim await Audrie's decision.
+> remaining order and learning effects stated.
+> **Decided (Audrie, 23 Oct): option 2.**
 
 - **Rules don't change between D1 and D2.** A change after D1 would change
   the treatment as well as the cadence; it waits for the comparison to end,

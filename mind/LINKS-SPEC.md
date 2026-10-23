@@ -29,8 +29,8 @@ restoration rules at the next run.
 
 - **Bounded:** labels cost a few hundred bytes, not the cards.
 - **Continuity:** a shared tag keeps a card eligible, but caps and answer
-  limits can hide its label. The recovery policy awaits the decision in
-  SLEEP-SPEC §2 (finding 4).
+  limits can hide its label. Such omissions are counted, not prevented
+  (SLEEP-SPEC §2, finding 4; Audrie, 23 Oct).
 - **Like memory, as far as it goes:** recalling one thing brings its
   associations to mind; what is used stays near, what isn't fades back, and
   using it again brings it forward. A guide for the design, not a claim
@@ -93,9 +93,8 @@ list is ranked and capped, and why hub tags count for little.
 
 Sleep ranks the chain under §§3, 7a. A faded card remains a candidate
 while its tag is shared, but may fall beyond a kind cap, the total cap or
-the answer limit. A shown route back is not guaranteed. SLEEP-SPEC §2 has
-the options and recommendation for Audrie (finding 4); no option is selected
-here. Its self-reinforcement measure (§8 there) uses C as the reference.
+the answer limit. A shown route back is not guaranteed; omissions are counted
+(SLEEP-SPEC §2, finding 4; decided by Audrie 23 Oct). Its self-reinforcement measure (§8 there) uses C as the reference.
 
 ## 6. What links never do
 
@@ -139,7 +138,7 @@ is made to fail once.
   by score descending, with C's group order breaking ties; empty groups
   are omitted. Items follow D's order in §3. Caps and trimming follow only
   after ranking. This defines accessibility from the per-card weights;
-  no separate group state is added. Recovery remains undecided (§5).
+  no separate group state is added. Recovery: omissions counted, not guaranteed (§5).
 - **One hop only, in v0.** More hops over shared tags mostly add noise
   (Halfverse: 902 cards at one hop). Deep chains follow typed links instead,
   weaker at each hop, as `associate` in the mind server (BUILD-SPEC §5,
