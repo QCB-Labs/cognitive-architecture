@@ -92,8 +92,12 @@ Logged in RESEARCH-SPEC §12, 30 Oct.
    fair readings, and the probe stays fixed.
 2. **H1 bytes are rebuilt for stage B** from the client's transcripts, and
    **byte logging is added to the read meter before stage C**. The read log
-   records which cards a recall returned, not their size, and the wake card
-   and `read_card` are not in it. An instrument change, not a protocol change.
+   records which cards a read returned, not their size. Corrected 1 Nov: this
+   line first said the wake card and `read_card` were not in the log. The wake
+   card was logged for all ten wakes and three probes; `read_card` has been
+   logged since 25 Oct and he didn't use it in stage B. No result changes,
+   because the bytes came from transcripts. An instrument change, not a
+   protocol change.
 
 ## Still open
 
