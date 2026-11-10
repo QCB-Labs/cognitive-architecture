@@ -1,6 +1,7 @@
 # Links v0: build spec
 
-*v0.1 DRAFT, 21 Oct 2026. Not decided: for Audrie to read. Written by POE,
+*v0.2, 10 Nov 2026: Audrie's decisions of 30 Oct and 10 Nov added (§§2, 3a, 4, 9).
+v0.1 DRAFT, 21 Oct 2026. Not decided: for Audrie to read. Written by POE,
 for Audrie, from her design (5 Oct, "the four things that matter": linking
 first) and her account of 21 Oct, using Halfverse as the example. Review
 welcome.*
@@ -41,8 +42,11 @@ restoration rules at the next run.
 v0 derives links from tags the cutter already writes. The agent does
 nothing new, and his protocol does not change.
 
-- **Entity tags** are the link points: `resident:`, `place:`, `thing:`,
-  `note:`. (On 21 Oct: 103 residents, 329 places, 257 things, 685 notes.)
+- **Entity tags** are the link points: `resident:`, `place:`, `thing:`.
+  (On 21 Oct: 103 residents, 329 places, 257 things.) **`note:` is not a
+  link point in v0** (Audrie, 10 Nov): its 685 tags are mostly on one card
+  each, so they would add noise, not connections. Adding `note:` back to
+  `link_tag_prefixes` turns it on, with the cap in §7a.
 - Two live cards are **linked** when they share an entity tag.
 - `name:`, `kind:`, `date:`, `wake:` and `ref:` are not link points: they
   describe a card rather than connect it.
@@ -81,6 +85,23 @@ After recall chooses the cards it returns (unchanged from today):
 cards; one hop through their entity tags reaches 902 more. That is why the
 list is ranked and capped, and why hub tags count for little.
 
+## 3a. Also on `read_resident` and `read_thread` (Audrie, 30 Oct)
+
+In stage B he called `recall` 3 times in 10 wakes, but read residents and
+threads every wake. So the list also goes where he already reads:
+
+- `read_resident(handle)` and `read_thread(title)` return their file text
+  as today, unchanged, then the linked list below it.
+- Their **returned cards** (§3 step 1) are the live cards cut from that
+  file. The tags asked for are that file's own: the resident's
+  `resident:` tag, or the thread's own entity tags in its heading.
+- Ranking, caps, the 12-label limit and the read log follow §§3, 4 and
+  7a exactly as for recall.
+- `read_resident()` with no handle (the index) and `read_threads` (the
+  list) get no linked list.
+- If the file has no cards yet (written this wake, not yet cut), the
+  list is empty and says so in one line.
+
 ## 4. Reads
 
 - Opening a linked card with `read_card` is a read, logged as it is today.
@@ -88,6 +109,13 @@ list is ranked and capped, and why hub tags count for little.
   apart from the ids **returned** in full. Offered is not read: sleep counts
   only returned and opened cards as reads. The study needs both, to see
   whether he follows the chain.
+- **A read belongs to the wake whose conversation made it** (Audrie, 10
+  Nov). The log's `wake` field is the meter's count at the time; after a
+  wake's close marker the same conversation sometimes reads on, and those
+  rows carry the next wake's number (28 of 742 reads, W282-W324). Stage C
+  counts per wake by `conversation`, with `wake` taken from that
+  conversation's first row. The agent is not stopped from reading after
+  close.
 
 ## 5. With sleep (later)
 
@@ -110,11 +138,13 @@ the answer limit. A shown route back is not guaranteed; omissions are counted
 
 1. The ranking as a pure function: (returned cards, store, weights,
    settings) to a list of labels.
-2. Recall adds `linked` to its answer; the read log adds `offered`.
+2. Recall adds `linked` to its answer; so do `read_resident(handle)` and
+   `read_thread(title)` (§3a); the read log adds `offered`.
 3. Settings in `config/cards.json`: `recall_linked_listed` (12),
    `link_tag_prefixes`. `0` turns the list off.
 
-**Tests:** with the list off, every recall answer is byte for byte what it
+**Tests:** with the list off, every recall, `read_resident` and
+`read_thread` answer is byte for byte what it
 is on `main` at the stage B freeze, with sleep off; with links on, sleep
 off and an enabled empty layer each preserve stage C byte for byte; the
 full cards returned and their order never change merely by enabling links;
@@ -128,7 +158,8 @@ is made to fail once.
 ## 7a. Decided in conversation, 21 Oct evening (Audrie)
 
 - **Grouped by kind.** The list comes in groups (threads, places, things,
-  notes, wakes), each with a small cap; `note:` links at most 3, so precise
+  notes, wakes), each with a small cap; `note:` links at most 3 (off in
+  v0, §2), so precise
   but rare note tags can't crowd out people and places. In stage C the
   groups come in a fixed order; both group and item order follow
   accessibility in D. **Proposed clarification, 23 Oct, finding 3:** use
@@ -190,11 +221,11 @@ they hold residents' words) is not part of v0.
 
 ## 9. Open
 
-- Two hops (person to place to thing) or one? v0 is one hop from what was
-  returned; the second hop is one more recall, by choice.
-- Should `note:` tags (685, mostly one card each) be link points, or only
-  names, places and things?
 - When does the agent write explicit links, with a reason? Not in v0.
+
+Settled, 10 Nov (Audrie): **one hop** (as §7a); **`note:` is not a link
+point in v0** (§2). On 30 Oct: the list also goes on `read_resident` and
+`read_thread` (§3a).
 
 ---
 *Sources: the operator's write-half design (5 Oct), "The four things that
