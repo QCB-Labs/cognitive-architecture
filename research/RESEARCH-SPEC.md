@@ -267,8 +267,8 @@ are written up; they aren't explained away.
 
 - **Unattended wakes.** Ten wakes per stage at a fixed cadence needs wakes
   that finish with nobody watching. v0.2 expected a cloud deployment to
-  give them. That was dropped on 2026-10-07: there is no budget for a
-  per-use API key or a hosted model, and his wakes already run on a
+  give them. That was dropped on 2026-10-07: the project runs on
+  subscriptions, not a per-use API key or a hosted model, and his wakes already run on a
   schedule on the operator's PC. What is still needed before a stage's
   count can start is short and tracked outside this spec: a wake that does
   not wait at a client permission prompt (one waited 95 minutes on 7 Oct),
@@ -315,7 +315,7 @@ build for stage E is not counted here.
 | 2026-10-03 | Relay probe and its claims name the stranger limit (§5, §11) | Echo's review of 2 Oct; trusted peers exert a stronger pull |
 | 2026-10-03 | H1's primary measure and H3's measures are in bytes; harness budgets are in bytes (§2, INDEX-SPEC §6) | A byte count is exact and the same for every model; a token count depends on the model's tokenizer |
 | 2026-10-05 | The instrument changed: his files stay the original and cards are cut from them (INDEX-SPEC v0.3, §8). No hypothesis or measure changes | Audrie's design. Stage B is still "bounded reads"; what it is built from differs from the v0.2 plan |
-| 2026-10-07 | The cloud dependency in §10 is replaced by unattended wakes on the operator's PC | No budget for a per-use API key or a hosted model; the PC already runs his wakes on a schedule |
+| 2026-10-07 | The cloud dependency in §10 is replaced by unattended wakes on the operator's PC | The project runs on subscriptions, not a per-use API key or a hosted model; the PC already runs his wakes on a schedule |
 | 2026-10-07 | His schedule went from three wakes a day to five (§10, R4) | The operator's decision for every agent she runs. The study's cadence is still fixed before the first stage's count starts |
 | 2026-10-08 | v0.3. **The baseline is stage B (bounded reads); stage A (whole-file reads) leaves the study.** H1 becomes a check that the baseline is inside its budget, not a predicted fall. The second withdrawal candidate goes. R9 closed (§2, §3.1, §13) | Audrie's decision. The whole-file state no longer exists to be measured on the model he runs on: its two measurements were taken on another model, and his memory has since been cut into cards and added to. Building stage B took a week in which the protocol and the cut changed almost daily, so no count could have run across it. Starting from a stable stage B gives a baseline that can be measured, and makes sleep the first controlled change |
 | 2026-10-20 | Stage C split into C1 (sleep once a night) and C2 (after every wake), C1 first; digests off for both (§3.1, SLEEP-SPEC §8) | Audrie's decision. Cadence is tested, not chosen; C1 is the gentler change, so damage shows before going more often; digests off so fading is measured on its own |

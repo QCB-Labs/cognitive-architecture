@@ -57,8 +57,8 @@ changed S0.5). Not built: goals, projects and threads as small files
 (INDEX-SPEC §8), feed cursors and the Market and Square catch-up (F10,
 F11), and sleep (F8). He runs on Gemini Flash in the Antigravity desktop
 app, five scheduled wakes a day on the operator's PC. The cloud deployment
-this stage was once paired with was dropped on 7 Oct: there is no budget for
-a per-use API key or a hosted model, and the PC already runs his wakes with
+this stage was once paired with was dropped on 7 Oct: the project runs on subscriptions,
+not a per-use API key or a hosted model, and the PC already runs his wakes with
 nobody watching. What "unattended" still needs is tracked outside this
 spec: a wake that does not wait at a permission prompt, a check that a wake
 committed, and tools that accept the argument names he uses (built 8 Oct).

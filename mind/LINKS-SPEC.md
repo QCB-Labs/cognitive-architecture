@@ -8,8 +8,8 @@ welcome.*
 
 ## 0. What this is
 
-Linking was first in the write-half design: "a card that mentions Halfverse
-points at the Resident #260 card, and that card points back at the wakes."
+Linking was first in the write-half design: a card that mentions a resident
+should point at that resident's card, and that card back at the wakes.
 It was never built. On 21 Oct every one of his 1,762 live cards has an
 empty `links` field, and nothing writes one. Tags stand in: recall finds
 cards by tag, and its answer names a few neighbours (`people`, `same_file`).

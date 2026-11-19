@@ -105,7 +105,7 @@ switch it off (CA §27.1, model independence).
 ## Rough fit on the free Oracle Arm VM (estimates, not measured)
 
 *Kept as a record. The cloud deployment was dropped on 2026-10-07, so sleep
-would run on the operator's PC (a GTX 1080 Ti with 11 GB, 24 GB of RAM),
+would run on the operator's PC (a consumer graphics card),
 which is a better fit for a small local model than this VM was.*
 
 2 cores, 12 GB, no GPU (Oracle's page, checked 2026-09-29: 1,500 OCPU-hours
