@@ -42,7 +42,25 @@ cached) on that step: the whole conversation by then, not only memory.
 - **Bounded.** The store grew 235 cards (+5.4%, about three million tokens'
   worth in all) while the wake card stayed at 35.6–36.8 KB (about 9k tokens)
   and memory read before acting stayed at 51–92 KB (about 13–23k tokens):
-  under 1% of the store.
+  under 1% of the store (see the 25 Nov correction below: about 0.6 to 1.0%).
+**Correction, 25 Nov 2026 (POE, accepted by Audrie).** The "Cards in store"
+column counted card *versions*, not cards. At W264 the store held 2,651
+distinct cards; 3.69 MB of the 12.62 MB was 241 copies of the resident index,
+which `62a3ee3` (16 Nov) stopped storing as a card. Without those copies the
+store is about 8.9 MB, so memory read before acting (51 to 92 KB) is about
+0.6 to 1.0% of it, not "under 1%". No other result changes. The table is left
+as published.
+
+**Instrument for stage C, 25 Nov 2026.** `research/tools/measure_wakes.py`
+now counts every read when one step issues two calls, and counts the 27
+tools the harness read meter covers plus `read_correspondence` and
+`read_drafts` (which stage B counted). Run on the ten stage B transcripts it
+gives more reads than the table above (for example W264: 14 reads, not 9) and
+a higher memory-before-acting range of 52.6 to 95.9 KB (table: 51 to 92 KB).
+The table above stays as published. Stage C is measured with this script, run
+on the stage B transcripts again for the comparison, and the harness read
+meter is reported beside it.
+
 - **Recall is barely used:** three recalls in ten wakes. Memory comes from
   the wake card and named readers (residents, correspondence, drafts,
   threads). Stage C's links ride on recall answers (HL); if he rarely

@@ -22,11 +22,18 @@ import re
 import sys
 from pathlib import Path
 
-# Harness tools that read his memory.
+# Harness tools that read his memory: the 27 the harness read meter covers
+# (`tools/session_context_hook.py`, METERED_TOOLS), plus `read_correspondence`
+# and `read_drafts`, which stage B counted and the meter does not.
 MEMORY_READS = {
-    "read_wake_card", "recall", "read_card", "read_thread", "read_threads",
-    "read_open_threads", "read_lessons", "read_goals", "read_recent_mission_log",
-    "read_resident", "read_correspondence", "read_drafts", "read_wishlist",
+    "compute_route", "list_continents", "query_almanac", "read_almanac_status",
+    "read_card", "read_city_rules", "read_flight_log", "read_goal", "read_goals",
+    "read_governance", "read_last_seen", "read_lessons", "read_map",
+    "read_open_threads", "read_project", "read_recent_mission_log",
+    "read_registry", "read_resident", "read_soul", "read_thread",
+    "read_threads", "read_wake_card", "read_wishlist", "read_work",
+    "read_works_index", "recall", "recover_unrecorded",
+    "read_correspondence", "read_drafts",
 }
 # Calls that change something in a world: the end of orientation.
 WORLD_ACTS = {("city", "act"), ("city", "say"), ("square", "vote_post"),
@@ -63,18 +70,23 @@ def measure(folder):
          "memory_bytes_before_act": 0, "memory_bytes_total": 0,
          "context_tokens_at_act": None, "first_act": None}
     acted = False
-    pending = None
+    pending = []  # one entry per MCP call of the last planner step, in order
     for d in steps:
         if pending and d["type"] != "PLANNER_RESPONSE":
+            # A step can issue two calls; each answer is its own output step.
+            tool = pending.pop(0)
+            if tool is None:
+                continue
             size = output_size(folder, d.get("content") or "")
             r["memory_reads"] += 1
             r["memory_bytes_total"] += size
             if not acted:
                 r["memory_bytes_before_act"] += size
-            if pending == "read_wake_card" and r["wake_card_bytes"] is None:
+            if tool == "read_wake_card" and r["wake_card_bytes"] is None:
                 r["wake_card_bytes"] = size
-            pending = None
             continue
+        if d["type"] == "PLANNER_RESPONSE":
+            pending = []
         for call in d.get("tool_calls") or []:
             if call["name"] != "call_mcp_tool":
                 continue
@@ -85,9 +97,11 @@ def measure(folder):
                 r["first_act"] = f"{server}.{tool}"
                 r["context_tokens_at_act"] = (d.get("input_tokens") or 0) + (d.get("cache_read_tokens") or 0)
             if server == "harness" and tool in MEMORY_READS:
-                pending = tool
+                pending.append(tool)
                 if tool == "recall":
                     r["recalls"] += 1
+            else:
+                pending.append(None)
     if r["wake_card_bytes"] is None:
         raise MeasureError(f"{folder.name}: no read_wake_card output")
     r["est_tokens_before_act"] = r["memory_bytes_before_act"] // BYTES_PER_TOKEN

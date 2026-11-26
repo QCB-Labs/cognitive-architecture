@@ -61,7 +61,7 @@ should move.
 |---|---|---|---|
 | H1 | At the baseline, what is read before acting is inside the whole-wake budget, including the client's overhead and stated for Flash (BUILD-SPEC S0.6a). (v0.2 predicted a fall from whole-file reads. That fall is an engineering record now, not a result: BUILD-SPEC S0.1) | bytes read, from the harness read meter (BUILD-SPEC F1), primary; client token count at end of orientation, secondary | B |
 | H2 | That figure stays inside the budget 20 wakes later, while the store has grown | the same, against store size | B, then C and D |
-| HL | **[proposal, 21 Oct]** With links on, he finds more of what is connected to the person or place he recalls, at a small, bounded cost: the waiting-thread probe finds the thread more often, and from the linked list; recall answers grow by no more than the list's labels | waiting-thread probe (§5) and where it was found; linked-list offers and opens per recall; recall answer bytes | C |
+| HL | With links on, he finds more of what is connected to the person or place he recalls, at a small, bounded cost: the waiting-thread probe finds the thread from the linked list, and without the second call that stage B refused (it was 3 of 3 at B, so "more often" cannot move); recall answers grow by no more than the list's labels | waiting-thread probe (§5) and where it was found; linked-list offers and opens per recall; recall answer bytes | C |
 | H3 | With sleep on, what the wake card and a typical recall return grows more slowly than the store does | wake card bytes and recall bytes per wake, against card count; changed answers per D1/D2 recall and self-reinforcement against C (SLEEP-SPEC §8) | D |
 | H4 | Provenance coverage goes from unmeasurable to a number, and rises as the chain is enforced | provenance coverage (CA §28) | E |
 | H5 | Absence claims without a null token fall to zero | untokened-absence rate (CA §28) | E |
@@ -110,7 +110,7 @@ two are never reported as one.
 |---|---|---|
 | (A) | Whole-file reads, as he ran up to W135 | **Before the study, since 2026-10-08.** Measured in two read-only test wakes on 2026-09-30, on another model: about 125,000 tokens before acting (BUILD-SPEC S0.1). Kept as the record of why the cards were built. No claim in the study rests on it |
 | B | **Bounded reads**: his files cut into cards, the wake card, recall (INDEX-SPEC) | **The baseline.** Its count starts when goals and threads are small files (INDEX-SPEC §8) and the protocol, the cut and the cadence have stopped changing |
-| C | B + **links**: every recall answer adds a ranked list of linked cards, as labels (`mind/LINKS-SPEC.md`) **[proposal, 21 Oct]** | The first change the study makes. 10 wakes. Links derived from tags; nothing about his protocol changes |
+| C | B + **links**: every recall, `read_resident` and `read_thread` answer adds a ranked list of linked cards, as labels (`mind/LINKS-SPEC.md`). Decided by Audrie, 25 Nov | The first change the study makes. 10 wakes. Links derived from tags; nothing about his protocol changes |
 | D | C + **bounded growth**: sleep v0 (`mind/SLEEP-SPEC.md`), which ranks the linked list | In two parts: **D1** sleep once a night, then **D2** after every wake, 10 wakes each, digests off. between them at least 10 closed wakes with sleep off and links on, so D1's reads leave the window (Audrie, 23 Oct); faded cards the link caps omit are counted, not guaranteed a route (SLEEP-SPEC §§8, 2) |
 | E | D + **traceability**: the evidence chain, cognitive objects and the null token (mind server L1–L3) | The mind server has to exist first |
 
@@ -121,8 +121,6 @@ byte for byte (SLEEP-SPEC §11). Each sleep stage records its initial
 `last_wake` at its start; earlier history supplies eligibility, not exposure.
 Only closed real wakes with complete marked read records supply the N-wake
 window. Sealed, read-only and unmarked reads never count (SLEEP-SPEC §4).
-The two decision boxes in SLEEP-SPEC leave D2's transition and the recovery
-policy open; the stage lengths above do not select an option.
 
 For every D1 and D2 recall, record and compute the sleep-off counterfactual
 with links on under SLEEP-SPEC §8. Count and name changed answers. Compare
@@ -203,7 +201,7 @@ Per real wake, readable by script:
    Every recall: the query, how many matched, how many were returned.
 4. Store size: card count by kind and status, and bytes.
 5. Whether he fell back to a whole-file reader, and which one.
-6. From stage C: the linked list offered with each recall, and which offers he
+6. From stage C: the linked list offered with each recall, `read_resident` and `read_thread`, and which offers he
    opened. From stage D: every sleep action, with its undo. Every D1/D2 recall
    has a unique id tied to its immutable store and layer state, full query and
    options, settings, code version and original answer (SLEEP-SPEC §8).
@@ -325,6 +323,14 @@ build for stage E is not counted here.
 | 2026-10-23 | SLEEP-SPEC v0.3; stage D decisions: a sleep-off gap of at least 10 wakes before D2 (finding 1), omitted faded cards counted, not guaranteed (finding 4); initialise exposure (2), define linked ordering (3), preserve B and C separately (5), compare damage with C (6), require D1/D2 counterfactuals (7), bind each recall to its exact replay state (8), exclude operator and unmarked reads (9), move traceability probes, records, scoring and dependencies to E (10) | proposed by Astra (Codex) from its review; accepted by Audrie 23 Oct with POE's picks on findings 1 and 4. Removes undefined treatment and measurement rules without changing frozen stage B (§§2, 3.1, 5–7, 10, 13; SLEEP-SPEC §§2–5, 8, 11–12; LINKS-SPEC §§3, 5, 7, 7a) |
 | 2026-10-30 | Stage B closed: ten wakes (W255–W264) and three valid probe sessions. Continuity "what were you doing" is scored against both the last wake's actions and its "What I Plan Next", each match recorded separately (§5, §7). Results: `stage-B-results.md` | Audrie, on POE's recommendation. He answered with actions three times out of three; both are fair readings. Scoring both keeps the probe fixed, so stage B stays comparable with C |
 | 2026-10-30 | H1 bytes for stage B are rebuilt from the client's transcripts (`tools/measure_wakes.py`); byte logging is added to the read meter (BUILD-SPEC F1) before stage C (§2, §6) | Audrie, on POE's recommendation. The read log records which cards a read returned, not their size (corrected 1 Nov: this row first said it leaves out the wake card and `read_card`; both are logged). An instrument change, not a change to his protocol |
+| 2026-10-30 | Linked list also on `read_resident` and `read_thread` (LINKS-SPEC §3a); `note:` tags off as link points | Audrie, 30 Oct (recorded 25 Nov). Row missing until now |
+| 2026-11-03 | New harness tool `read_my_record` | Row missing until now |
+| 2026-11-10 | Links v0.2: `note:` tags off; reads counted by conversation | Audrie, 10 Nov (LINKS-SPEC §§2, 4). Row missing until now |
+| 2026-11-10 | Protocol change: the mission log drops the Resolved list | Audrie, 10 Nov. A protocol change between B and C; C is compared against B with this in mind. Row missing until now |
+| 2026-11-16 | `62a3ee3`: the wake's closed line carries the conversation; the resident index is no longer stored as a card | Fix from the 16 Nov review. Corrects stage B's "Cards in store" (stage-B-results, 25 Nov) |
+| 2026-11-25 | **A.** The H1/H2 ceiling is set from stage B (about 100 KB before acting, 44 KB wake card) and is logged as set after B, not before | Audrie, 25 Nov, on POE's pick. BUILD-SPEC S0.6a said "set from the first measured wake on cards"; it never was |
+| 2026-11-25 | **B.** No separate links-off block; the 10-wake B′ on Gemini 4 (S84) is the fresh baseline C is compared against, as well as stage B | Audrie, 25 Nov. About 90 wakes, ten harness changes and a model change (Gemini 3.8 Flash to Gemini 4, 17 Nov) sit between B and C |
+| 2026-11-25 | HL reworded to a measure that can move; HL and stage C marked decided; `measure_wakes.py` counts every read in a step and the 27 metered tools; stage C uses it | Audrie, 25 Nov. See stage-B-results.md, 25 Nov |
 
 ## 13. Open questions
 

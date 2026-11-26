@@ -1,7 +1,7 @@
 # Links v0: build spec
 
 *v0.2, 10 Nov 2026: Audrie's decisions of 30 Oct and 10 Nov added (§§2, 3a, 4, 9).
-v0.1 DRAFT, 21 Oct 2026. Not decided: for Audrie to read. Written by POE,
+v0.1, 21 Oct 2026. Decided by Audrie, 25 Nov 2026 (stage C goes ahead on it). Written by POE,
 for Audrie, from her design (5 Oct, "the four things that matter": linking
 first) and her account of 21 Oct, using Halfverse as the example. Review
 welcome.*
@@ -131,7 +131,7 @@ the answer limit. A shown route back is not guaranteed; omissions are counted
   question.)
 - Write to his files or cards, or change the `links` field. v0 derives;
   it stores nothing.
-- Know about the city beyond the four tag prefixes, which live in config
+- Know about the city beyond the three tag prefixes, which live in config
   (`link_tag_prefixes`), so another world names its own (study 3).
 
 ## 7. Build order and tests
@@ -162,7 +162,7 @@ is made to fail once.
   v0, §2), so precise
   but rare note tags can't crowd out people and places. In stage C the
   groups come in a fixed order; both group and item order follow
-  accessibility in D. **Proposed clarification, 23 Oct, finding 3:** use
+  accessibility in D. **Decided 23 Oct, finding 3 (Audrie, with SLEEP-SPEC v0.3):** use
   the fixed order just listed in C, with items following §3. Any
   other kinds follow in kind-name order. In D, a nonempty group's score is
   the mean effective weight of all its candidates before caps. Groups sort
